@@ -1,0 +1,259 @@
+#!/usr/bin/bash
+#
+# 	Part of kde-service-menu-pdf Version 2.3
+# 	Copyright (C) 2007-2019 Giuseppe Benigno <giuseppe.benigno(at)gmail.com>
+#
+# 	This program is free software: you can redistribute it and/or modify
+# 	it under the terms of the GNU General Public License as published by
+# 	the Free Software Foundation, either version 3 of the License, or
+# 	(at your option) any later version.
+#
+# 	This program is distributed in the hope that it will be useful,
+# 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+# 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# 	GNU General Public License for more details.
+#
+# 	You should have received a copy of the GNU General Public License
+# 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+new_line="
+"
+
+#### languages strings messages #################
+# Syntax for strings name is: msg_[$action]_$window_[$section]
+# For languages as sr@Latn use srLatn
+
+load_language_de() {
+	msg_common_software_not_found_title="Komponente wurde nicht gefunden"
+	msg_common_pdfinfo_not_found_text="Die pdfinfo Software wurde nicht gefunden! Bitte installieren Sie poppler-utils."
+	msg_common_pdfnup_not_found_text="Die pdfnup Software wurde nicht gefunden! Bitte installieren Sie texlive-extra-utils."
+	msg_common_file_not_found="Datei nicht gefunden."
+	msg_common_finish_ok="Fertig."
+	msg_common_finish_error="Ein Fehler ist aufgetreten."
+
+	msg_custom_title="Eigene Aufteilung für \"${base_file_name}\""
+	msg_custom="Neue Seitenaufteilung für \"${base_file_name}\" (Spalten X Zeilen):"
+	msg_frames_title="Rahmen Einstellungen für \"${base_file_name}\""
+	msg_frames="Wollen Sie einen Rahmen um jede Seite von \"${base_file_name}\"?"
+	msg_frames_no="Nein"
+	msg_frames_yes="Ja"
+	msg_save_file_title="Dokument speichern"
+	msg_finish_title="Umwandeln von Dokument \"${file_name}\""
+}
+
+load_language_en () {
+	msg_common_software_not_found_title="Component not found"
+	msg_common_pdfinfo_not_found_text="Software pdfinfo not found! Please, install poppler-utils."
+	msg_common_pdfnup_not_found_text="Software pdfnup not found! Please, install texlive-extra-utils."
+	msg_common_file_not_found="File not found."
+	msg_common_finish_ok="Done."
+	msg_common_finish_error="An error has occurred."
+
+	msg_custom_title="Custom \"N-upped\" of \"${base_file_name}\""
+	msg_custom="Set new proportions for \"${base_file_name}\" (columns X row):"
+	msg_frames_title="Frames preference for \"${base_file_name}\""
+	msg_frames="Do you want frames for every pages of \"${base_file_name}\"?"
+	msg_frames_no="No"
+	msg_frames_yes="Yes"
+	msg_save_file_title="Save document"
+	msg_finish_title="Conversion of document \"${file_name}\""
+}
+
+load_language_fr () {
+	msg_common_software_not_found_title="Composant non trouvé"
+	msg_common_pdfinfo_not_found_text="Logiciel pdfinfo non trouvé! S'il vous plaît, installez poppler-utils."
+	msg_common_pdfnup_not_found_text="Logiciel pdfnup non trouvé! S'il vous plaît, installez texlive-extra-utils."
+	msg_common_file_not_found="Fichier non trouvé."
+	msg_common_finish_ok="Terminée."
+	msg_common_finish_error="Une erreur est survenue."
+
+	msg_custom_title="Conversion personalisée du \"${base_file_name}\""
+	msg_custom="Proportions (colonnes X lignes):"
+	msg_frames_title="Bordures du \"${base_file_name}\""
+	msg_frames="Voulez-vous imprimer des bordures pour chaques page ?"
+	msg_frames_no="Non"
+	msg_frames_yes="Oui"
+	msg_save_file_title="Enregistrer le document sous"
+	msg_finish_title="Conversion du document \"${file_name}\""
+}
+
+load_language_it () {
+	msg_common_software_not_found_title="Componente non trovato"
+	msg_common_pdfinfo_not_found_text="Il software pdfinfo non è stato trovato! Per favore, installa poppler-utils."
+	msg_common_pdfnup_not_found_text="Il software pdfnup non è stato trovato! Per favore, installa texlive-extra-utils."
+	msg_common_file_not_found="File non trovato."
+	msg_common_finish_ok="Conclusa."
+	msg_common_finish_error="Si è verificato un errore."
+
+	msg_custom_title="Rimpaginazione personalizzata di \"${base_file_name}\""
+	msg_custom="Imposta le nuove proporzioni per \"${base_file_name}\" (colonne X righe):"
+	msg_frames_title="Preferenza bordi per \"${base_file_name}\""
+	msg_frames="Vuoi i bordi per ogni pagina di \"${base_file_name}\"?"
+	msg_frames_no="No"
+	msg_frames_yes="Si"
+	msg_save_file_title="Salva documento rimpaginato"
+	msg_finish_title="Rimpaginazione del documento \"${file_name}\""
+}
+
+load_language_sr () {
+	msg_common_software_not_found_title="Компонента није пронађена"
+	msg_common_pdfinfo_not_found_text="Софтвер pdfinfo није пронађен! Молим вас, инсталирајте poppler-utils."
+	msg_common_pdfnup_not_found_text="Софтвер pdfnup није пронађен! Молимо вас, инсталирајте texlive-extra-utils."
+	msg_common_file_not_found="Фајл није пронађен"
+	msg_common_finish_ok="Готова."
+	msg_common_finish_error="Дошло је до грешке."
+
+	msg_custom_title="Персонализована конверзија документа"
+	msg_custom="Пропорције (врсте X редови):"
+	msg_frames_title="Оквири"
+	msg_frames="Да ли желите оквире за све странице?"
+	msg_frames_no="Не"
+	msg_frames_yes="Да"
+	msg_save_file_title="Сачувајте документ"
+	msg_finish_title="Конверзија документа \"${file_name}\""
+}
+
+load_language_srLatn () {
+	msg_common_software_not_found_title="Komponenta nije pronađena"
+	msg_common_pdfinfo_not_found_text="Software pdfinfo not found! Molimo, instalirajte poppler-utils."
+	msg_common_pdfnup_not_found_text="Softver pdfnup nije pronađen! Molimo instalirajte texlive-extra-utils."
+	msg_common_file_not_found="Datoteka nije pronađena."
+	msg_common_finish_ok="Gotova."
+	msg_common_finish_error="Došlo je do greške."
+
+	msg_custom_title="Personalizovana konverzija dokumenta"
+	msg_custom="Proporcije (vrste X redovi):"
+	msg_frames_title="Okviri"
+	msg_frames="Da li želite okvire za sve stranice?"
+	msg_frames_no="Ne"
+	msg_frames_yes="Da"
+	msg_save_file_title="Sačuvajte dokument"
+	msg_finish_title="Konverzija dokumenta \"${file_name}\""
+}
+
+load_language_pt () {
+	msg_common_software_not_found_title="Componente não encontrado"
+	msg_common_pdfinfo_not_found_text="Software pdfinfo não encontrado! Por favor, instale o poppler-utils."
+	msg_common_pdfnup_not_found_text="Software pdfnup não encontrado! Por favor, instale o texlive-extra-utils."
+	msg_common_file_not_found="Arquivo não encontrado."
+	msg_common_finish_ok="Concluído."
+	msg_common_finish_error="Ocorreu um erro."
+
+	msg_custom_title="Conversão personalizada do \"${base_file_name}\""
+	msg_custom="Proporção (colunas X linhas):"
+	msg_frames_title="Molduras do \"${base_file_name}\""
+	msg_frames="Deseja adicionar molduras a todas as páginas?"
+	msg_frames_no="Não"
+	msg_frames_yes="Sim"
+	msg_save_file_title="Guardar ficheiro"
+	msg_finish_title="Converter o documento \"${file_name}\""
+}
+
+load_language_ru () {
+	msg_common_software_not_found_title="Компонент не найден"
+	msg_common_pdfinfo_not_found_text="Программное обеспечение pdfinfo не найдено! Установите poppler-utils."
+	msg_common_pdfnup_not_found_text="Программное обеспечение pdfnup не найдено! Установите texlive-extra-utils"
+	msg_common_file_not_found="Файл не найден."
+	msg_common_finish_ok="Готово."
+	msg_common_finish_error="Произошла ошибка."
+
+	msg_custom_title="Пользовательская нумерация страниц \"${base_file_name}\""
+	msg_custom="Установить новые пропорции (столбцы X строки) для \"${base_file_name}\" :"
+	msg_frames_title="Предпочитаемые кромки для \"${base_file_name}\""
+	msg_frames="Вы хотите кромки для каждой страницы \"${base_file_name}\"?"
+	msg_frames_no="Нет"
+	msg_frames_yes="Да"
+	msg_save_file_title="Сохранить документ"
+	msg_finish_title="Преобразование документа \"${file_name}\""
+}
+
+load_language () {
+	## Load localized strings AFTER english strings
+	## - if localized strings not found use english for default
+	## - if localized strings are incomplete use english only fot missing strings :-)
+	load_language_en && [ "${lang}" != "en" ] && load_language_${lang}
+}
+
+lang=${LANGUAGE%%:*}
+type load_language_${lang} > /dev/null || lang='en'
+load_language
+
+################################################################################
+
+help () {
+	echo
+	echo "USE:\t\t${0##*/} nup-type files"
+	echo
+	echo "nup-type:\t\t2x1, 2x2, 2x3, 2x4, custom"
+	echo "files:\t\tfile1 file2 ..."
+	echo
+	echo "example:\t${0##*/} 2x1 /home/user/file1.pdf /home/user/file2.pdf"
+	echo
+	exit 0
+}
+
+################################################
+
+run_nup () {
+	with_frame=$("${kdialog_bin}" --title "${msg_frames_title}" --radiolist "${msg_frames}" false "${msg_frames_no}" on true "${msg_frames_yes}" off) || exit 0
+
+	output_file_name="${work_dir}/${base_file_name} ${nup}.pdf"
+	if [ -e "${output_file_name}" ]; then
+		output_file_name=$("${kdialog_bin}" --title "${msg_save_file_title}" --getsavefilename "${output_file_name}" application/pdf) || exit 0
+	fi
+
+	msg=$("${pdfnup_bin}" "${input}" --nup ${nup} ${orientation} --frame ${with_frame} --outfile "${output_file_name}" 2>&1) && \
+	"${kdialog_bin}" --icon page-4sides --title "${msg_finish_title}" --passivepopup "${msg_common_finish_ok}" 5 || \
+	{ "${kdialog_bin}" --title "${msg_finish_title}" --detailederror "${msg_common_finish_error}"  "${msg}"; exit 2; }
+}
+
+ask_custom_nup () {
+	nup=$("${kdialog_bin}" --title "${msg_custom_title}" --inputbox "${msg_custom}" "2x1") || exit 0
+}
+
+set_nup () {
+	for input in "${@}"; do
+		work_dir="${input%/*}" && [ ! -d "${work_dir}" ] && work_dir="$(pwd)"
+		file_name="${input##*/}"
+		base_file_name="${file_name%.*}"
+
+		## Reload language strings with current variables
+		load_language
+
+	    size=$(${pdfinfo_bin} "${input}" | grep "^Page size:" | sed "s/^.* \([[:digit:]]*\) x \([[:digit:]]*\).*$/\1x\2/") || exit 3
+		size=$(echo "${size}" | sed "s/\.[[:digit:]]*//g" | sed "s/[^[[:digit:]]*]*:[[:blank:]]*//")
+	    width=$(echo "${size}" | sed 's/\([[:digit:]]*\)[[:blank:]]*x.*/\1/g')
+	    height=$(echo "${size}" | sed 's/.*x[[:blank:]]*\([[:digit:]]*\).*/\1/g')
+
+		[ "${nup}" = "custom" ] && ask_custom_nup
+
+		columns=${nup%x*}
+		lines=${nup##*x}
+		[ ${width} -ge ${height} ] && nup="${lines}x${columns}"
+		[ "$((${width}*${columns}))" -ge "$((${height}*${lines}))" ] && orientation="--landscape" || orientation="--no-landscape"
+
+		[ ! -f "${work_dir}/${file_name}" ] && shift && "${kdialog_bin}" --title "${msg_finish_title}" --passivepopup "${msg_common_file_not_found}" 5 && continue
+		run_nup "${input}"
+	done
+}
+
+################################################################################
+
+[ "${1}" = "-h" ] || [ "${1}" = "--help" ] || [ ${#} -lt 2 ] && help
+
+kdialog_bin=$(which kdialog)
+[ -z "${kdialog_bin}" ] && echo "kdialog not found!" && exit 1
+
+pdfinfo_bin=$(which pdfinfo)
+[ -z "${pdfinfo_bin}" ] && "${kdialog_bin}" --title "${msg_common_software_not_found_title}" --error "${msg_common_pdfinfo_not_found_text}" && exit 2
+
+pdfnup_bin=$(which pdfnup)
+[ -z "${pdfnup_bin}" ] && "${kdialog_bin}" --title "${msg_common_software_not_found_title}" --error "${msg_common_pdfnup_not_found_text}" && exit 2
+
+nup="${1}"
+shift
+
+set_nup "${@}"
+
+exit 0

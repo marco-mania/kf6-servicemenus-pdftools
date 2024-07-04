@@ -1,0 +1,184 @@
+#!/usr/bin/bash
+#
+# 	Part of kde-service-menu-pdf Version 2.3
+# 	Copyright (C) 2007-2019 Giuseppe Benigno <giuseppe.benigno(at)gmail.com>
+#
+# 	This program is free software: you can redistribute it and/or modify
+# 	it under the terms of the GNU General Public License as published by
+# 	the Free Software Foundation, either version 3 of the License, or
+# 	(at your option) any later version.
+#
+# 	This program is distributed in the hope that it will be useful,
+# 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+# 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# 	GNU General Public License for more details.
+#
+# 	You should have received a copy of the GNU General Public License
+# 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+new_line="
+"
+new_line="\n"
+
+#### languages strings messages #################
+# Syntax for strings name is: msg_[$action]_$window_[$section]
+# For languages as sr@Latn use srLatn
+
+load_language_de () {
+	msg_common_software_not_found_title="Komponente wurde nicht gefunden"
+	msg_common_pdfinfo_not_found_text="Die pdfinfo Software wurde nicht gefunden! Bitte installieren Sie poppler-utils."
+	msg_common_pdfdetach_not_found_text="Die pdfdetach Software wurde nicht gefunden! Bitte installieren Sie poppler-utils."
+	msg_common_action_not_found_text="Die angeforderte Aktion ist nicht implementiert."
+	msg_common_file_not_found="Datei nicht gefunden."
+	msg_common_save_file_title="Datei speichern ..."
+	msg_common_finish_ok="Fertig."
+	msg_common_finish_error="Ein Fehler ist aufgetreten."
+
+	msg_detach_finish_title="Copy all attached files of document \"${base_file_name}\""
+	msg_detach_list_title="Liste der Anhänge für"
+}
+
+load_language_en () {
+	msg_common_software_not_found_title="Component not found"
+	msg_common_pdfinfo_not_found_text="Software pdfinfo not found! Please, install poppler-utils."
+	msg_common_pdfdetach_not_found_text="Software pdfdetach not found! Please, install poppler-utils."
+	msg_common_action_not_found_text="The requested action is not implemented."
+	msg_common_file_not_found="File not found."
+	msg_common_save_file_title="Save file ..."
+	msg_common_finish_ok="Done."
+	msg_common_finish_error="An error has occurred."
+
+	msg_detach_finish_title="Copy all attached files of document \"${base_file_name}\""
+	msg_detach_list_title="List of attachments for"
+}
+
+load_language_fr () {
+	msg_common_software_not_found_title="Composant non trouvé"
+	msg_common_pdfinfo_not_found_text="Logiciel pdfinfo non trouvé! S'il vous plaît, installez poppler-utils."
+	msg_common_pdfdetach_not_found_text="Logiciel pdfdetach non trouvé! S'il vous plaît, installez poppler-utils."
+	msg_common_action_not_found_text="L'action demandée n'est pas implémentée."
+	msg_common_file_not_found="Fichier non trouvé."
+	msg_common_save_file_title="Sauver le fichier ..."
+	msg_common_finish_ok="Terminée."
+	msg_common_finish_error="Une erreur est survenue."
+
+	msg_detach_finish_title="Copie des fichiers en pièce-jointe à \"${base_file_name}\""
+	msg_detach_list_title="Liste des pièces jointes pour"
+}
+
+load_language_it () {
+	msg_common_software_not_found_title="Componente non trovato"
+	msg_common_pdfinfo_not_found_text="Il software pdfinfo non è stato trovato! Per favore, installa poppler-utils."
+	msg_common_pdfdetach_not_found_text="Il software pdfdetach non è stato trovato! Per favore, installa poppler-utils."
+	msg_common_action_not_found_text="L'azione richiesta non è implementata."
+	msg_common_file_not_found="File non trovato."
+	msg_common_save_file_title="Salva file ..."
+	msg_common_finish_ok="Eseguita."
+	msg_common_finish_error="Si è verificato un errore."
+
+	msg_detach_finish_title="Copia di tutti i file allegati al documento \"${base_file_name}\""
+	msg_detach_list_title="Elenco degli allegati per"
+}
+
+load_language_ru () {
+	msg_common_software_not_found_title="Компонент не найден"
+	msg_common_pdfinfo_not_found_text="Программное обеспечение pdfinfo не найдено! Установите poppler-utils."
+	msg_common_pdfdetach_not_found_text="Программное обеспечение pdfdetach не найдено! Установите poppler-utils."
+	msg_common_action_not_found_text="Запрошенное действие не выполнено."
+	msg_common_file_not_found="Файл не найден."
+	msg_common_save_file_title="Сохранить файл ..."
+	msg_common_finish_ok="Готово."
+	msg_common_finish_error="Произошла ошибка."
+
+	msg_detach_finish_title="Копировать все вложенные файлы из документа \"${base_file_name}\""
+	msg_detach_list_title="Список приложений для"
+}
+
+load_language () {
+	## Load localized strings AFTER english strings
+	## - if localized strings not found use english for default
+	## - if localized strings are incomplete use english only fot missing strings :-)
+	load_language_en && [ "${lang}" != "en" ] && load_language_${lang}
+}
+
+lang=${LANGUAGE%%:*}
+type load_language_${lang} > /dev/null || lang='en'
+load_language
+
+################################################################################
+
+help () {
+	echo
+	echo "USE:\t\t${0##*/} action files"
+	echo
+	echo "action:\t\tlist, detach"
+	echo "files:\t\tfile1 file2 ..."
+	echo
+	echo "example:\t${0##*/} repair /home/user/file1.pdf /home/user/file2.pdf"
+	echo
+	exit 0
+}
+
+list () {
+	msg=""
+
+	while [ $# -ne 0 ]; do
+		work_dir="${1%/*}"; [ ! -d "${work_dir}" ] && work_dir="$(pwd)"
+		file_name="${1##*/}"
+		base_file_name="${file_name%.*}"
+
+		## Reload language strings with current variables
+		load_language
+
+		[ ! -f "${work_dir}/${file_name}" ] && shift && "${kdialog_bin}" --icon mail-forward-attachment --title "${msg_finish_title}" --passivepopup "${msg_common_file_not_found}" 5 && continue
+
+		[ -n "${msg}" ] && msg="${msg}${new_line}"
+		msg="${msg}${msg_detach_list_title} ${base_file_name}${new_line}"
+ 		msg="${msg}$("${pdfdetach_bin}" -list "${work_dir}/${file_name}")${new_line}"
+
+ 		shift
+	done
+
+	"${kdialog_bin}" --title "${msg_detach_list_title}" --msgbox "${msg}"
+}
+
+detach () {
+	for input in "${@}"; do
+		work_dir="${input%/*}" && [ ! -d "${work_dir}" ] && work_dir="$(pwd)"
+		file_name="${input##*/}"
+		base_file_name="${file_name%.*}"
+
+		## Reload language strings with current variables
+		load_language
+
+		[ ! -f "${work_dir}/${file_name}" ] && shift && "${kdialog_bin}" --icon mail-forward-attachment --title "${msg_detach_finish_title}" --passivepopup "${msg_common_file_not_found}" 5 && continue
+
+		msg=$("${pdfdetach_bin}" -saveall "${input}" 2>&1) && \
+		"${kdialog_bin}" --icon mail-forward-attachment --title "${msg_detach_finish_title}" --passivepopup "${msg_common_finish_ok}" 5 || \
+		{ "${kdialog_bin}" --title "${msg_detach_finish_title}" --detailederror "${msg_common_finish_error}" "${msg}"; exit 2; }
+	done
+}
+
+################################################################################
+
+[ "${1}" = "-h" ] || [ "${1}" = "--help" ] || [ ${#} -lt 2 ] && help
+
+kdialog_bin=$(which kdialog)
+[ -z "${kdialog_bin}" ] && echo "kdialog not found!" && exit 1
+
+pdfinfo_bin=$(which pdfinfo)
+[ -z "${pdfinfo_bin}" ] && "${kdialog_bin}" --title "${msg_common_software_not_found_title}" --error "${msg_common_pdfinfo_not_found_text}" && exit 2
+
+pdfdetach_bin=$(which pdfdetach)
+[ -z "${pdfdetach_bin}" ] && "${kdialog_bin}" --title "${msg_common_software_not_found_title}" --error "${msg_common_pdfdetach_not_found_text}" && exit 2
+
+action="${1}"
+shift
+
+type "${action}" >/dev/null 2>&1 || \
+	{ "${kdialog_bin}" --title "${msg_common_software_not_found_title}" --error "${msg_common_action_not_found_text}" && exit 3; }
+
+"${action}" "${@}"
+
+exit 0

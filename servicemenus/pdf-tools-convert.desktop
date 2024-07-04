@@ -1,0 +1,291 @@
+#
+# 	Part of kde-service-menu-pdf Version 2.3
+# 	Copyright (C) 2007-2019 Giuseppe Benigno <giuseppe.benigno(at)gmail.com>
+#
+# 	This program is free software: you can redistribute it and/or modify
+# 	it under the terms of the GNU General Public License as published by
+# 	the Free Software Foundation, either version 3 of the License, or
+# 	(at your option) any later version.
+#
+# 	This program is distributed in the hope that it will be useful,
+# 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+# 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# 	GNU General Public License for more details.
+#
+# 	You should have received a copy of the GNU General Public License
+# 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+[Desktop Entry]
+Type=Service
+ServiceTypes=KonqPopupMenu/Plugin
+MimeType=application/pdf;
+Actions=optimize;pdfa1b;pdfa2b;_SEPARATOR_;djvu_300;djvu_600;djvu_custom;djvu_advanced;_SEPARATOR_;htmlallpages;htmlselectpages;_SEPARATOR_;png16m;png256;png16;pnggray;pngmono;pngalpha;_SEPARATOR_;jpeg;jpeggray;_SEPARATOR_;ppmallpages;ppmselectpages;_SEPARATOR_;psallpages;psselectpages;_SEPARATOR_;tiffg3;tiffg32d;tiffg4;
+Name=PDF Convert service menu
+X-KDE-Submenu=Convert
+X-KDE-Submenu[de]=Konvertieren
+X-KDE-Submenu[es]=Convertir
+X-KDE-Submenu[fr]=Convertir
+X-KDE-Submenu[gl]=Converter
+X-KDE-Submenu[it]=Converti
+X-KDE-Submenu[ru]=Преобразовать
+
+#----------------------------------------
+
+[Desktop Action optimize]
+Icon=application-pdf
+Name=Optimize document
+Name[de]=Dokument optimieren
+Name[es]=Optimizar documento
+Name[fr]=Optimiser le document
+Name[gl]=Optimizar documento
+Name[it]=Ottimizza documento
+Name[ru]=Оптимизация документа
+Exec=pdf-tools-gs-kdialog optimize %F
+
+[Desktop Action pdfa1b]
+Icon=application-pdf
+Name=PDF/A-1b
+Exec=pdf-tools-gs-kdialog pdfa1b %F
+
+[Desktop Action pdfa2b]
+Icon=application-pdf
+Name=PDF/A-2b
+Exec=pdf-tools-gs-kdialog pdfa2b %F
+
+#----------------------------------------
+
+[Desktop Action djvu_300]
+Icon=image-vnd.djvu
+Name=DjVu (resolution: 300 DPI)
+Name[es]=DjVu (resolución: 300 DPI)
+Name[fr]=DjVu (résolution: 300 DPI)
+Name[it]=DjVu (risoluzione: 300 DPI)
+Name[ru]=DjVu (Разрешение: 300 DPI)
+Exec=pdf-tools-2djvu-kdialog dpi 300 %F
+
+[Desktop Action djvu_600]
+Icon=image-vnd.djvu
+Name=DjVu (resolution: 600 DPI)
+Name[es]=DjVu (resolución: 600 DPI)
+Name[fr]=DjVu (résolution: 600 DPI)
+Name[it]=DjVu (risoluzione: 600 DPI)
+Name[ru]=DjVu (Разрешение: 600 DPI)
+Exec=pdf-tools-2djvu-kdialog dpi 600 %F
+
+[Desktop Action djvu_custom]
+Icon=image-vnd.djvu
+Name=DjVu (custom resolution)
+Name[es]=DjVu (resolución personalizada)
+Name[fr]=DjVu (résolution personnalisée)
+Name[it]=DjVu (risoluzione personalizzata)
+Name[ru]=DjVu (Свое разрешение)
+Exec=pdf-tools-2djvu-kdialog dpi %F
+
+[Desktop Action djvu_advanced]
+Icon=image-vnd.djvu
+Name=DjVu (advanced options)
+Name[es]=DjVu (opciones avanzadas)
+Name[fr]=DjVu (options avancées)
+Name[it]=DjVu (opzioni avanzate)
+Name[ru]=DjVu (Дополнительные настройки)
+Exec=pdf-tools-2djvu-kdialog advanced %F
+
+#----------------------------------------
+
+[Desktop Action jpeg]
+Icon=image-jpeg
+Name=JPEG (color)
+Name[de]=JPEG (Farbe)
+Name[es]=JPEG (color)
+Name[fr]=JPEG (couleurs)
+Name[gl]=JPEG (cor)
+Name[it]=JPEG (colore)
+Name[ru]=JPEG (цветой)
+Exec=pdf-tools-gs-kdialog jpeg jpeg %F
+
+[Desktop Action jpeggray]
+Icon=image-jpeg
+Name=JPEG (gray tones)
+Name[de]=JPEG (Graustufen)
+Name[es]=JPEG (tonos de gris)
+Name[fr]=JPEG (nuances de gris)
+Name[gl]=JPEG (tons aborralhados)
+Name[it]=JPEG (toni di grigio)
+Name[ru]=JPEG (серые тона)
+Exec=pdf-tools-gs-kdialog jpeg jpeggray %F
+
+#----------------------------------------
+
+[Desktop Action png16m]
+Icon=image-png
+Name=PNG (full colors)
+Name[de]=PNG (alle Farben)
+Name[es]=PNG (todos los colores)
+Name[fr]=PNG (toutes les couleurs)
+Name[gl]=PNG (todas as cores)
+Name[it]=PNG (full colors)
+Name[ru]=PNG (полный диапазон цветов)
+Exec=pdf-tools-gs-kdialog png png16m %F
+
+[Desktop Action png256]
+Icon=image-png
+Name=PNG (256 colors)
+Name[de]=PNG (256 Farben)
+Name[es]=PNG (256 colores)
+Name[fr]=PNG (256 couleurs)
+Name[gl]=PNG (256 cores)
+Name[it]=PNG (256 colors)
+Name[ru]=PNG (256 цветов)
+Exec=pdf-tools-gs-kdialog png png256 %F
+
+[Desktop Action png16]
+Icon=image-png
+Name=PNG (16 colors)
+Name[de]=PNG (16 Farben)
+Name[es]=PNG (16 colores)
+Name[fr]=PNG (16 couleurs)
+Name[gl]=PNG (16 cores)
+Name[it]=PNG (16 colors)
+Name[ru]=PNG (16 цветов)
+Exec=pdf-tools-gs-kdialog png png16 %F
+
+[Desktop Action pnggray]
+Icon=image-png
+Name=PNG (gray tones)
+Name[de]=PNG (Graustufen)
+Name[es]=PNG (tonos de gris)
+Name[fr]=PNG (nuances de gris)
+Name[gl]=PNG (tons aborralhados)
+Name[it]=PNG (toni di grigio)
+Name[ru]=PNG (серые тона)
+Exec=pdf-tools-gs-kdialog png pnggray %F
+
+[Desktop Action pngmono]
+Icon=image-png
+Name=PNG (black and white)
+Name[de]=PNG (schwarz / weiß)
+Name[es]=PNG (blanco y negro)
+Name[fr]=PNG (noir et blanc)
+Name[gl]=PNG (branco e negro)
+Name[it]=PNG (bianco e nero)
+Name[ru]=PNG (черно белый)
+Exec=pdf-tools-gs-kdialog png pngmono %F
+
+[Desktop Action pngalpha]
+Icon=image-png
+Name=PNG (transparency)
+Name[de]=PNG (transparent)
+Name[es]=PNG (con transparencia)
+Name[fr]=PNG (avec transparence)
+Name[gl]=PNG (com transparéncia)
+Name[it]=PNG (con trasparenza)
+Name[ru]=PNG (прозрачный)
+Exec=pdf-tools-gs-kdialog png pngalpha %F
+
+#----------------------------------------
+
+[Desktop Action tiffg3]
+Icon=image-tiff
+Name=TIFF (FAX G3 encoding)
+Name[de]=TIFF (FAX G3 encoding)
+Name[es]=TIFF (FAX codificación G3)
+Name[fr]=TIFF (FAX encodage G3)
+Name[gl]=TIFF (FAX codificaçom G3 encoding)
+Name[it]=TIFF (FAX codifica G3)
+Name[ru]=TIFF (факс кодирование G3)
+Exec=pdf-tools-gs-kdialog tiff tiffg3 %F
+
+[Desktop Action tiffg32d]
+Icon=image-tiff
+Name=TIFF (FAX 2-D G3 encoding)
+Name[de]=TIFF (FAX 2-D G3 encoding)
+Name[es]=TIFF (FAX codificación 2-D G3)
+Name[fr]=TIFF (FAX encodage 2-D G3)
+Name[gl]=TIFF (FAX codificaçom 2-D G3)
+Name[it]=TIFF (FAX codifica 2-D G3)
+Name[ru]=TIFF (факс кодирование 2-D G3)
+Exec=pdf-tools-gs-kdialog tiff tiffg32d %F
+
+[Desktop Action tiffg4]
+Icon=image-tiff
+Name=Convert to fax (FAX G4 encoding)
+Name[de]=TIFF (FAX G4 encoding)
+Name[es]=TIFF (FAX codificación G4)
+Name[fr]=TIFF (FAX encodage G4)
+Name[gl]=TIFF (FAX codificaçom G4)
+Name[it]=TIFF (FAX codifica G4)
+Name[ru]=TIFF (факс G4)
+Exec=pdf-tools-gs-kdialog tiff tiffg4 %F
+
+#----------------------------------------
+
+[Desktop Action psallpages]
+Icon=application-postscript
+Name=PostScript (all pages)
+Name[de]=PostScript (alle Seiten)
+Name[es]=PostScript (todas las páginas)
+Name[fr]=PostScript (toutes les pages)
+Name[gl]=PostScript (todas as páginas)
+Name[it]=PostScript (tutte le pagine)
+Name[ru]=PostScript (Все страницы)
+Exec=pdf-tools-tops-kdialog allpages %F
+
+[Desktop Action psselectpages]
+Icon=application-postscript
+Name=PostScript (select pages range)
+Name[de]=PostScript (seitenbereich wählen)
+Name[es]=PostScript (rango de páginas seleccionado)
+Name[fr]=PostScript (sélection de pages)
+Name[gl]=PostScript (um rango de páginas selecionado)
+Name[it]=PostScript (seleziona le pagine)
+Name[ru]=PostScript (Выбрать диапазон страниц)
+Exec=pdf-tools-tops-kdialog selectpages %F
+
+#----------------------------------------
+
+[Desktop Action ppmallpages]
+Icon=image
+Name=PPM (all pages)
+Name[de]=PPM (alle Seiten)
+Name[es]=PPM (todas las páginas)
+Name[fr]=PPM (toutes les pages)
+Name[gl]=PPM (todas as páginas)
+Name[it]=PPM (tutte le pagine)
+Name[ru]=PPM (Все страницы)
+Exec=pdf-tools-toppm-kdialog allpages %F
+
+[Desktop Action ppmselectpages]
+Icon=image
+Name=PPM (select pages range)
+Name[de]=PPM (seitenbereich wählen)
+Name[es]=PPM (rango de páginas seleccionado)
+Name[fr]=PPM (sélection de pages)
+Name[gl]=PPM (um rango de páginas selecionado)
+Name[it]=PPM (seleziona le pagine)
+Name[ru]=PPM (Выбрать диапазон страниц)
+Exec=pdf-tools-toppm-kdialog selectpages %F
+
+#----------------------------------------
+
+[Desktop Action htmlallpages]
+Icon=text-html
+Name=HTML (all pages)
+Name[de]=HTML (alle Seiten)
+Name[es]=HTML (todas las páginas)
+Name[fr]=HTML (toutes les pages)
+Name[gl]=HTML (todas as páginas)
+Name[it]=HTML (tutte le pagine)
+Name[ru]=HTML (Все страницы)
+Exec=pdf-tools-tohtml-kdialog allpages %F
+
+[Desktop Action htmlselectpages]
+Icon=text-html
+Name=HTML (select pages range)
+Name[de]=HTML (seitenbereich wählen)
+Name[es]=HTML (rango de páginas seleccionado)
+Name[fr]=HTML (sélection de pages)
+Name[gl]=HTML (um rango de páginas selecionado)
+Name[it]=HTML (seleziona le pagine)
+Name[ru]=HTML (Выбрать диапазон страниц)
+Exec=pdf-tools-tohtml-kdialog selectpages %F

@@ -1,0 +1,331 @@
+#!/usr/bin/bash
+#
+# 	Part of kde-service-menu-pdf Version 2.3
+# 	Copyright (C) 2007-2019 Giuseppe Benigno <giuseppe.benigno(at)gmail.com>
+#
+# 	This program is free software: you can redistribute it and/or modify
+# 	it under the terms of the GNU General Public License as published by
+# 	the Free Software Foundation, either version 3 of the License, or
+# 	(at your option) any later version.
+#
+# 	This program is distributed in the hope that it will be useful,
+# 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+# 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# 	GNU General Public License for more details.
+#
+# 	You should have received a copy of the GNU General Public License
+# 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+new_line="
+"
+
+#### languages strings messages #################
+# Syntax for strings name is: msg_[$action]_$window_[$section]
+# For languages as sr@Latn use srLatn
+
+load_language_de () {
+	msg_common_software_not_found_title="Komponente wurde nicht gefunden"
+	msg_common_pdfinfo_not_found_text="Die pdfinfo Software wurde nicht gefunden! Bitte installieren Sie poppler-utils."
+	msg_common_pdfseparate_not_found_text="Die pdfseparate Software wurde nicht gefunden! Bitte installieren Sie poppler-utils"
+	msg_common_action_not_found_text="Die angeforderte Aktion ist nicht implementiert."
+	msg_common_file_not_found="Datei nicht gefunden."
+	msg_common_finish_ok="Fertig."
+	msg_common_finish_error="Ein Fehler ist aufgetreten."
+	msg_common_select_output_dir="Zielverzeichnis auswählen"
+
+	msg_range_input_pages_range_title="Seiten für den Auszug"
+	msg_range_input_pages_range="Geben Sie einen oder mehrere zu extrahierende Seitenbereiche ein.${new_line}Jeder Bereich muss mit der folgenden Syntax angegeben werden: ERSTE-LETZTE${new_line}ERSTE und LETZTE die erste bzw. letzte Seite des Bereichs sind.${new_line}Wenn Sie weitere Bereiche einfügen möchten, trennen Sie sie durch ein Komma oder ein Leerzeichen.${new_line}Wenn Sie auf die letzte Seite verweisen möchten, können Sie dies tun, indem Sie die letzte Seitennummer weglassen.${new_line}${new_line}Wenn Sie beispielsweise 1 5-8 15-Seiten 1, 5, 6, 7, 8 eingeben, werden diese extrahiert und von 15 bis zur letzten Seite."
+	msg_range_finish_title="Seiten aus Dokument \"${file_name}\" herausgezogen"
+
+	msg_odd_output_dir_name="${base_file_name} (ungerade Seiten)"
+	msg_odd_finish_title="Alle ungeraden Seiten von \"${file_name}\" herausziehen"
+
+	msg_even_output_dir_name="${base_file_name} (gerade Seiten)"
+	msg_even_finish_title="Alle geraden Seiten von \"${file_name}\" herausziehen"
+
+	msg_burst_finish_title="Dokument \"${file_name}\" sprengen"
+}
+
+load_language_en () {
+	msg_common_software_not_found_title="Component not found"
+	msg_common_pdfinfo_not_found_text="Software pdfinfo not found! Please, install poppler-utils."
+	msg_common_pdfseparate_not_found_text="Software pdfseparate not found! Please, install poppler-utils."
+	msg_common_action_not_found_text="The requested action is not implemented."
+	msg_common_file_not_found="File not found."
+	msg_common_finish_ok="Done."
+	msg_common_finish_error="An error has occurred."
+	msg_common_select_output_dir="Select destination directory"
+
+	msg_range_input_pages_range_title="Extract range"
+	msg_range_input_pages_range="Enter one or more ranges of pages to extract.${new_line}Each range must be specified using the following syntax: FIRST-LAST${new_line}FIRST and LAST are, respectively, the first and last page of the range.${new_line}If you want to insert more ranges, separate them with a comma or a space.${new_line}If you want to refer to the last page, you can do it by omitting the final page number.${new_line}${new_line}For example, entering 1 5-8 15- pages 1, 5, 6, 7, 8 will be extracted and from 15 to the last page."
+	msg_range_finish_title="Extracted pages from document \"${file_name}\""
+
+	msg_odd_output_dir_name="${base_file_name} (odd pages)"
+	msg_odd_finish_title="Extract all odd pages from document \"${file_name}\""
+
+	msg_even_output_dir_name="${base_file_name} (even pages)"
+	msg_even_finish_title="Extract all even pages from document \"${file_name}\""
+
+	msg_burst_finish_title="Burst the document \"${file_name}\""
+}
+
+load_language_fr () {
+	msg_common_software_not_found_title="Composant non trouvé"
+	msg_common_pdfinfo_not_found_text="Logiciel pdfinfo non trouvé! S'il vous plaît, installez poppler-utils."
+	msg_common_pdfseparate_not_found_text="Logiciel pdfseparate non trouvé! S'il vous plaît, installez poppler-utils."
+	msg_common_action_not_found_text="L'action demandée n'est pas implémentée."
+	msg_common_file_not_found="Fichier non trouvé."
+	msg_common_finish_ok="Terminée."
+	msg_common_finish_error="Une erreur est survenue."
+	msg_common_select_output_dir="Selectionnez le dossier de destination"
+
+	msg_range_input_pages_range_title="Sélection de pages"
+	msg_range_input_pages_range="Entrez une ou plusieurs plages de pages à extraire.${new_line}Chaque plage doit être spécifiée à l'aide de la syntaxe suivante: PREMIER-DERNIER${new_line}PREMIER et DERNIER sont respectivement la première et la dernière page de la plage.${new_line}Si vous souhaitez insérer plusieurs plages, séparez-les par une virgule ou un espace.${new_line}Si vous souhaitez vous référer à la dernière page, vous pouvez le faire en omettant le numéro de la dernière page.${new_line}${new_line}Par exemple, entrer 1 5-8 15- pages 1, 5, 6, 7, 8 sera extrait et de 15 à la dernière page."
+	msg_range_finish_title="Extraction d'une sélection de pages de \"${file_name}\""
+
+	msg_odd_output_dir_name="${base_file_name} (pages impaires)"
+	msg_odd_finish_title="Extraction des pages impaires du document \"${file_name}\""
+
+	msg_even_output_dir_name="${base_file_name} (pages paires)"
+	msg_even_finish_title="Extraction des pages paires du document \"${file_name}\""
+
+	msg_burst_finish_title="Éclatement du document \"${file_name}\""
+}
+
+load_language_it () {
+	msg_common_software_not_found_title="Componente non trovato"
+	msg_common_pdfinfo_not_found_text="Il software pdfinfo non è stato trovato! Per favore, installa poppler-utils."
+	msg_common_pdfseparate_not_found_text="Il software pdfseparate non è stato trovato! Per favore, installa poppler-utils."
+	msg_common_action_not_found_text="L'azione richiesta non è implementata."
+	msg_common_file_not_found="File non trovato."
+	msg_common_finish_ok="Conclusa."
+	msg_common_finish_error="Si è verificato un errore."
+	msg_common_select_output_dir="Seleziona la cartella di destinazione"
+
+	msg_range_input_pages_range_title="Range di estrazione"
+	msg_range_input_pages_range="Inserire uno o più range di pagine da estrarre.${new_line}Ogni range deve essere specificato tramite la sintassi seguente: PRIMA-ULTIMA${new_line}PRIMA e ULTIMA sono, rispettivamente, la prima e l'ultima pagina del range.${new_line}Nel caso si volessero inserire più range, separarli con una virgola o uno spazio.${new_line}Se ci si vuole riferire all'ultima pagina, lo si può fare omettendo il numero di pagina finale.${new_line}${new_line}Per esempio, inserendo 1 5-8 15- verranno estratte le pagine 1, 5, 6, 7, 8 e dalla 15 fino all'ultima pagina."
+
+	msg_range_finish_title="Estrazione delle pagine dal documento \"${file_name}\""
+
+	msg_odd_output_dir_name="${base_file_name} (pagine dispari)"
+	msg_odd_finish_title="Estrazione di tutte le pagine dispari dal documento \"${file_name}\""
+
+	msg_even_output_dir_name="${base_file_name} (pagine pari)"
+	msg_even_finish_title="Estrazione di tutte le pagine pari dal documento \"${file_name}\""
+
+	msg_burst_finish_title="Divisione completa del documento \"${file_name}\""
+}
+
+load_language_ru () {
+	msg_common_software_not_found_title="Компонент не найден"
+	msg_common_pdfinfo_not_found_text="Программное обеспечение pdfinfo не найдено! Установите poppler-utils."
+	msg_common_pdfseparate_not_found_text="Программное обеспечение pdfseparate не найдено! Установите poppler-utils."
+	msg_common_action_not_found_text="Запрошенное действие не выполнено."
+	msg_common_file_not_found="Файл не найден."
+	msg_common_finish_ok="Готово."
+	msg_common_finish_error="Произошла ошибка."
+	msg_common_select_output_dir="Выбрать каталог назначения"
+
+	msg_range_input_pages_range_title="Диапазон извлечения"
+	msg_range_input_pages_range="Введите один или несколько диапазонов страниц для извлечения.${new_line}Каждый диапазон должен быть указан с использованием следующего синтаксиса: ПЕРВЫЙ-ПОСЛЕДНИЙ${new_line}ПЕРВЫЙ и ПОСЛЕДНИЙ являются соответственно первой и последней страницей диапазона.${new_line}Если вы хотите вставить больше диапазонов, разделите их запятой или пробелом.${new_line}Если вы хотите обратиться к последней странице, вы можете сделать это, пропустив последний номер страницы.${new_line}${new_line}Например, введя 1 5-8 15- страницы 1, 5, 6, 7, 8 будут извлечены и с 15 до последней страницы."
+	msg_range_finish_title="Извлечение страниц из документа \"${file_name}\""
+
+	msg_odd_output_dir_name="${base_file_name} (нечетные страницы)"
+	msg_odd_finish_title="Извлечь все нечетные страницы из документа \"${file_name}\""
+
+	msg_even_output_dir_name="${base_file_name} (четные страницы)"
+	msg_even_finish_title="Извлечь все четные страницы из документа \"${file_name}\""
+
+	msg_burst_finish_title="Разорвать документ \"${base_file_name}\""
+}
+
+load_language () {
+	## Load localized strings AFTER english strings
+	## - if localized strings not found use english for default
+	## - if localized strings are incomplete use english only fot missing strings :-)
+	load_language_en && [ "${lang}" != "en" ] && load_language_${lang}
+}
+
+lang=${LANGUAGE%%:*}
+type load_language_${lang} > /dev/null || lang='en'
+load_language
+
+################################################################################
+
+help () {
+	echo
+	echo "USE:\t\t${0##*/} action files"
+	echo
+	echo "action:\t\trange, odd, even, burst"
+	echo "files:\t\tfile1 file2 ..."
+	echo
+	echo "example:\t${0##*/} repair /home/user/file1.pdf /home/user/file2.pdf"
+	echo
+	exit 0
+}
+
+## Extract same range of pages from one or many files.
+range () {
+	ranges=$("${kdialog_bin}" --title "${msg_range_input_pages_range_title}" --inputbox "${msg_range_input_pages_range}" "1-") || exit 0
+	ranges=$(echo "$ranges" | tr , ' ')
+
+	for input in "${@}"; do
+		work_dir="${input%/*}" && [ ! -d "${work_dir}" ] && work_dir="$(pwd)"
+		file_name="${input##*/}"
+		base_file_name="${file_name%.*}"
+
+		pages_qty=$("${pdfinfo_bin}" "${input}" | grep "^Pages:" | sed "s/^.* //")
+		len=${#pages_qty}
+		[ ${len} -eq 1 ] && len=2
+		len="%0${len}d"
+
+		## Reload language strings with current variables
+		load_language
+
+		output_dir_name="${work_dir}/${base_file_name}"
+		if [ -d "${output_dir_name}" ]; then
+			output_dir_name=$("${kdialog_bin}" --title "${msg_common_select_output_dir}" --getexistingdirectory "${output_dir_name}") || exit 0
+		fi
+
+		[ ! -f "${work_dir}/${file_name}" ] && shift && "${kdialog_bin}" --title "${msg_range_finish_title}" --passivepopup "${msg_common_file_not_found}" 5 && continue
+
+		output_file_name="${output_dir_name}/"${len}".pdf"
+
+		for range in $ranges; do
+			first=${range%-*}
+			[ -z "${first}" ] && first='' || first="-f ${first}"
+			last=${range##*-}
+			[ -z "${last}" ] || [ "${last}" = 'end' ] && last='' || last="-l ${last}"
+
+# 			echo "$range ($first -> $last)"
+
+			msg=$(mkdir -p "${output_dir_name}" 2>&1) && \
+			msg=$("${pdfseparate_bin}" ${first} ${last} "${input}" "${output_file_name}" 2>&1) && \
+			"${kdialog_bin}" --icon viewpdf --title "${msg_range_finish_title}" --passivepopup "${msg_common_finish_ok}" 5 || \
+			{ "${kdialog_bin}" --title "${msg_range_finish_title}" --detailederror "${msg_common_finish_error}" "${msg}"; exit 2; }
+		done
+	done
+}
+
+## Extract odd pages from one or many files.
+odd () {
+	for input in "${@}"; do
+		work_dir="${input%/*}" && [ ! -d "${work_dir}" ] && work_dir="$(pwd)"
+		file_name="${input##*/}"
+		base_file_name="${file_name%.*}"
+
+		pages_qty=$("${pdfinfo_bin}" "${input}" | grep "^Pages:" | sed "s/^.* //")
+		len=${#pages_qty}
+		[ ${len} -eq 1 ] && len=2
+		len="%0${len}d"
+
+		## Reload language strings with current variables
+		load_language
+
+		output_dir_name="${work_dir}/${msg_odd_output_dir_name}"
+		if [ -d "${output_dir_name}" ]; then
+			output_dir_name=$("${kdialog_bin}" --title "${msg_common_select_output_dir}" --getexistingdirectory "${output_dir_name}") || exit 0
+		fi
+
+		pages_list=$(seq 1 2 $pages_qty)
+		for page in ${pages_list}; do
+			[ ! -f "${work_dir}/${file_name}" ] && shift && "${kdialog_bin}" --title "${msg_odd_finish_title}" --passivepopup "${msg_common_file_not_found}" 5 && continue
+
+			output_file_name="${output_dir_name}/"${len}".pdf"
+
+			msg=$(mkdir -p "${output_dir_name}" 2>&1) && \
+			msg=$("${pdfseparate_bin}" -f $page -l $page "${input}" "${output_file_name}" 2>&1) && \
+			"${kdialog_bin}" --icon viewpdf  --title "${msg_odd_finish_title}" --passivepopup "${msg_common_finish_ok}" 5 || \
+			{ "${kdialog_bin}" --title "${msg_odd_finish_title}" --detailederror "${msg_common_finish_error}" "${msg}"; exit 2; }
+		done
+	done
+}
+
+## Extract even pages from one or many files.
+even () {
+	for input in "${@}"; do
+		work_dir="${input%/*}" && [ ! -d "${work_dir}" ] && work_dir="$(pwd)"
+		file_name="${input##*/}"
+		base_file_name="${file_name%.*}"
+
+		pages_qty=$("${pdfinfo_bin}" "${input}" | grep "^Pages:" | sed "s/^.* //")
+		len=${#pages_qty}
+		[ ${len} -eq 1 ] && len=2
+		len="%0${len}d"
+
+		## Reload language strings with current variables
+		load_language
+
+		output_dir_name="${work_dir}/${msg_even_output_dir_name}"
+		if [ -d "${output_dir_name}" ]; then
+			output_dir_name=$("${kdialog_bin}" --title "${msg_common_select_output_dir}" --getexistingdirectory "${output_dir_name}") || exit 0
+		fi
+
+		pages_list=$(seq 2 2 $pages_qty)
+		for page in ${pages_list}; do
+			[ ! -f "${work_dir}/${file_name}" ] && shift && "${kdialog_bin}" --title "${msg_even_finish_title}" --passivepopup "${msg_common_file_not_found}" 5 && continue
+
+			output_file_name="${output_dir_name}/"${len}".pdf"
+
+			msg=$(mkdir -p "${output_dir_name}" 2>&1) && \
+			msg=$("${pdfseparate_bin}" -f $page -l $page "${input}" "${output_file_name}" 2>&1) && \
+			"${kdialog_bin}" --icon viewpdf  --title "${msg_even_finish_title}" --passivepopup "${msg_common_finish_ok}" 5 || \
+			{ "${kdialog_bin}" --title "${msg_even_finish_title}" --detailederror "${msg_common_finish_error}" "${msg}"; exit 2; }
+		done
+	done
+}
+
+## Explode one or many documents, one file for page.
+burst () {
+	for input in "${@}"; do
+		work_dir="${input%/*}" && [ ! -d "${work_dir}" ] && work_dir="$(pwd)"
+		file_name="${input##*/}"
+		base_file_name="${file_name%.*}"
+
+		pages_qty=$("${pdfinfo_bin}" "${input}" | grep "^Pages:" | sed "s/^.* //")
+		len=${#pages_qty}
+		[ ${len} -eq 1 ] && len=2
+		len="%0${len}d"
+
+		## Reload language strings with current variables
+		load_language
+
+		output_dir_name="${work_dir}/${base_file_name}"
+		if [ -d "${output_dir_name}" ]; then
+			output_dir_name=$("${kdialog_bin}" --title "${msg_common_select_output_dir}" --getexistingdirectory "${output_dir_name}") || exit 0
+		fi
+
+		[ ! -f "${work_dir}/${file_name}" ] && shift && "${kdialog_bin}" --title "${msg_burst_finish_title}" --passivepopup "${msg_common_file_not_found}" 5 && continue
+
+		output_file_name="${output_dir_name}/"${len}".pdf"
+
+		msg=$(mkdir -p "${output_dir_name}" 2>&1) && \
+ 		msg=$("${pdfseparate_bin}" "${input}" "${output_file_name}" 2>&1) && \
+		"${kdialog_bin}" --icon viewpdf  --title "${msg_burst_finish_title}" --passivepopup "${msg_common_finish_ok}" 5 || \
+		{ "${kdialog_bin}" --title "${msg_burst_finish_title}" --detailederror "${msg_common_finish_error}" "${msg}"; exit 2; }
+	done
+}
+
+################################################################################
+
+[ "${1}" = "-h" ] || [ "${1}" = "--help" ] || [ ${#} -lt 2 ] && help
+
+kdialog_bin=$(which kdialog)
+[ -z "${kdialog_bin}" ] && echo "kdialog not found!" && exit 1
+
+pdfinfo_bin=$(which pdfinfo)
+[ -z "${pdfinfo_bin}" ] && "${kdialog_bin}" --title "${msg_common_software_not_found_title}" --error "${msg_common_pdfinfo_not_found_text}" && exit 2
+
+pdfseparate_bin=$(which pdfseparate)
+[ -z "${pdfseparate_bin}" ] && "${kdialog_bin}" --title "${msg_common_software_not_found_title}" "${msg_common_pdfseparate_not_found_text}" && exit 2
+
+action="${1}"
+shift
+
+type "${action}" >/dev/null 2>&1 || \
+	{ "${kdialog_bin}" --title "${msg_common_software_not_found_title}" --error "${msg_common_action_not_found_text}" && exit 3; }
+
+"${action}" "${@}"
+
+exit 0

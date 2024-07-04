@@ -1,0 +1,162 @@
+#!/usr/bin/bash
+#
+# 	Part of kde-service-menu-pdf Version 2.3
+# 	Copyright (C) 2007-2019 Giuseppe Benigno <giuseppe.benigno(at)gmail.com>
+#
+# 	This program is free software: you can redistribute it and/or modify
+# 	it under the terms of the GNU General Public License as published by
+# 	the Free Software Foundation, either version 3 of the License, or
+# 	(at your option) any later version.
+#
+# 	This program is distributed in the hope that it will be useful,
+# 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+# 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# 	GNU General Public License for more details.
+#
+# 	You should have received a copy of the GNU General Public License
+# 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+new_line="
+"
+
+#### languages strings messages #################
+# Syntax for strings name is: msg_[$action]_$window_[$section]
+# For languages as sr@Latn use srLatn
+
+load_language_de () {
+	msg_common_software_not_found_title="Komponente wurde nicht gefunden"
+	msg_common_pdfinfo_not_found_text="Die pdfinfo Software wurde nicht gefunden! Bitte installieren Sie pdfinfo."
+	msg_common_file_not_found="Datei nicht gefunden."
+
+	msg_insert_password_title="Passwort eingeben"
+	msg_insert_password_usr="Bitte das Benutzerpasswort:"
+	msg_insert_password_own="Bitte das Masterpasswort:"
+
+	msg_info_title="Informationen"
+}
+
+load_language_en () {
+	msg_common_software_not_found_title="Component not found"
+	msg_common_pdfinfo_not_found_text="Software pdfinfo not found! Please, install it."
+	msg_common_file_not_found="File not found."
+
+	msg_insert_password_title="Insert password"
+	msg_insert_password_usr="Please insert user password:"
+	msg_insert_password_own="Please insert main password:"
+
+	msg_info_title="Information"
+}
+
+load_language_fr () {
+	msg_common_software_not_found_title="Composant non trouvé"
+	msg_common_pdfinfo_not_found_text="Logiciel pdfinfo non trouvé! S'il vous plaît, installez-le."
+	msg_common_file_not_found="Fichier non trouvé."
+
+	msg_insert_password_title="Saisissez le mot de passe"
+	msg_insert_password_usr="Saisissez le mot de passe utilisateur:"
+	msg_insert_password_own="Saisissez le mot de passe Administrateur:"
+
+	msg_info_title="Informations"
+}
+
+load_language_it () {
+	msg_common_software_not_found_title="Componente non trovato"
+	msg_common_pdfinfo_not_found_text="Il software pdfinfo non è stato trovato! Per favore, installalo."
+	msg_common_file_not_found="File non trovato."
+
+	msg_insert_password_title="Inserisci Password"
+	msg_insert_password_usr="Per favore digita la password utente:"
+	msg_insert_password_own="Per favore digita la password principale:"
+
+	msg_info_title="Informazioni"
+}
+
+load_language_ru () {
+	msg_common_software_not_found_title="Компонент не найден"
+	msg_common_pdfinfo_not_found_text="Программное обеспечение pdfinfo не найдено! Установите pdfinfo."
+	msg_common_file_not_found="Файл не найден."
+
+	msg_insert_password_title="Вставить пароль"
+	msg_insert_password_usr="Пожалуйста, введите пароль пользователя:"
+	msg_insert_password_own="Пожалуйста, введите основной пароль:"
+
+	msg_info_title="Информация"
+}
+
+load_language () {
+	## Load localized strings AFTER english strings
+	## - if localized strings not found use english for default
+	## - if localized strings are incomplete use english only fot missing strings :-)
+	load_language_en && [ "${lang}" != "en" ] && load_language_${lang}
+}
+
+lang=${LANGUAGE%%:*}
+type load_language_${lang} > /dev/null || lang='en'
+load_language
+
+################################################################################
+
+help () {
+	echo
+	echo "USE:\t\t${0##*/} files"
+	echo
+	echo "files:\t\tfile1 file2 ..."
+	echo
+	echo "example:\t${0##*/} en /home/user/file1.pdf /home/user/file2.pdf"
+	echo
+	exit 0
+}
+
+checkIfProtected () {
+	is_protected=$("${pdfinfo_bin}" "${1}" 2>&1 | sed "s/.*Incorrect password.*/Encrypted: yes/" | grep '^Encrypted:' | sed "s/^[^ ]* *\([^ ]*\).*/\1/")
+}
+
+askPassword () {
+	password=$("${kdialog_bin}" --title "${msg_insert_password_title}" --password "${msg_insert_password_usr}") || exit 0
+	password=$(echo ${password} |grep '^.' |sed 's/^/-upw /')
+
+	if [ -z "${password}" ]; then
+		password=$("${kdialog_bin}" --title "${msg_insert_password_title}" --password "${msg_insert_password_own}") || exit 0
+		password=$(echo ${password} |grep '^.' |sed 's/^/-opw /')
+	fi
+
+	[ -z "${password}" ] && password=''
+}
+
+info () {
+	checkIfProtected $1
+
+	[ ${is_protected} = 'yes' ] && askPassword
+
+	newline="\n"
+	msg=""
+	while [ $# -ne 0 ]; do
+		work_dir="${1%/*}"; [ ! -d "${work_dir}" ] && work_dir="$(pwd)"
+		file_name="${1##*/}"
+
+		[ ! -f "${work_dir}/${file_name}" ] && shift && "${kdialog_bin}" --title "${msg_finish_title}" --passivepopup "${msg_common_file_not_found}" 5 && continue
+
+		[ -n "${msg}" ] && msg="${msg}${newline}"
+		msg="${msg}${msg_info_title}    ${file_name}${newline}"
+ 		msg="${msg}$("${pdfinfo_bin}" "${work_dir}/${file_name}")${newline}"
+
+ 		shift
+	done
+
+	"${kdialog_bin}" --title "${msg_info_title}" --icon help-about --msgbox "${msg}"
+}
+
+################################################################################
+
+[ "${1}" = "-h" ] || [ "${1}" = "--help" ] || [ ${#} -lt 1 ] && help
+
+kdialog_bin=$(which kdialog)
+[ -z "${kdialog_bin}" ] && echo "kdialog not found!" && exit 1
+
+pdfinfo_bin=$(which pdfinfo)
+[ -z "${pdfinfo_bin}" ] && "${kdialog_bin}" --title "${msg_common_software_not_found_title}" --error "${msg_common_pdfinfo_not_found_text}" && exit 2
+
+info "${@}"
+
+exit 0

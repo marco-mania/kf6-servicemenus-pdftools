@@ -1,0 +1,165 @@
+#
+# 	Part of kde-service-menu-pdf Version 2.3
+# 	Copyright (C) 2007-2019 Giuseppe Benigno <giuseppe.benigno(at)gmail.com>
+#
+# 	This program is free software: you can redistribute it and/or modify
+# 	it under the terms of the GNU General Public License as published by
+# 	the Free Software Foundation, either version 3 of the License, or
+# 	(at your option) any later version.
+#
+# 	This program is distributed in the hope that it will be useful,
+# 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+# 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# 	GNU General Public License for more details.
+#
+# 	You should have received a copy of the GNU General Public License
+# 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+[Desktop Entry]
+Type=Service
+ServiceTypes=KonqPopupMenu/Plugin
+MimeType=application/pdf;
+Icon=preferences-system
+Actions=merge;add;_SEPARATOR_;extract_range;extract_odd;extract_even;burst;_SEPARATOR_;rotate_left;rotate_right;overturn;flip;_SEPARATOR_;info;_SEPARATOR_;print
+Name=PDF Tools service menu
+X-KDE-Submenu=Tools
+X-KDE-Submenu[it]=Strumenti
+
+[Desktop Action merge]
+Icon=list-add
+Name=Merge selected documents (Alphabetical order)
+Name[de]=Ausgewählte Dokumente vereinigen (Alphabetische Reihenfolge)
+Name[es]=Unir los documentos seleccionados (Orden alfabético)
+Name[fr]=Joindre les documents sélectionnés (Ordre alphabétique)
+Name[gl]=Unir documentos selecionados (orde alfabética)
+Name[it]=Unisci i documenti selezionati (Ordine alfabetico)
+Name[ru]=Присоединить выбранные документы (в алфавитном порядке)
+Exec=pdf-tools-unite-kdialog merge %F
+
+[Desktop Action add]
+Icon=list-add
+Name=Add another document
+Name[de]=Ein weiteres Dokument hinzufügen
+Name[es]=Añadir otro documento
+Name[fr]=Ajouter un autre document
+Name[gl]=Engadir outro documento
+Name[it]=Aggiungi un altro documento
+Name[ru]=Добавить другой документ
+Exec=pdf-tools-unite-kdialog add %F
+
+#---------------------------------------------------------------------------------------------------------------------------------------------------
+
+[Desktop Action extract_range]
+Icon=document-export
+Name=Extract pages
+Name[de]=Seiten herausziehen
+Name[es]=Extraer páginas
+Name[fr]=Extraire une sélection de pages
+Name[gl]=Extrair páginas
+Name[it]=Estrai pagine
+Name[ru]=Извлечь страницы
+Exec=pdf-tools-separate-kdialog range %F
+
+[Desktop Action extract_odd]
+Icon=document-export
+Name=Extract all odd pages
+Name[de]=Alle ungeraden Seiten herausziehen
+Name[es]=Extraer todas las páginas impares
+Name[fr]=Extraire les pages impaires
+Name[gl]=Extrair todas as páginas impares
+Name[it]=Estrai tutte le pagine dispari
+Name[ru]=Извлечь все нечетные страницы
+Exec=pdf-tools-separate-kdialog odd %F
+
+[Desktop Action extract_even]
+Icon=document-export
+Name=Extract all even pages
+Name[de]=Alle geraden Seiten herausziehen
+Name[es]=Extraer todas las páginas pares
+Name[fr]=Extraire les pages paires
+Name[gl]=Extrair todas as páginas pares
+Name[it]=Estrai tutte le pagine pari
+Name[ru]=Извлечь все четные страницы
+Exec=pdf-tools-separate-kdialog even %F
+
+[Desktop Action burst]
+Icon=document-export
+Name=Burst
+Name[de]=Alle Seiten einzeln herausziehen
+Name[es]=Dividir
+Name[fr]=Éclater toutes les pages (un fichier par page)
+Name[gl]=Dividir
+Name[it]=Dividi completamente
+Name[ru]=Разорвать на страницы
+Exec=pdf-tools-separate-kdialog burst %F
+
+#---------------------------------------------------------------------------------------------------------------------------------------------------
+
+[Desktop Action rotate_left]
+Icon=object-rotate-left
+Name=Rotate to left
+Name[de]=Nach links drehen
+Name[es]=Rotar a la izquierda
+Name[fr]=Rotation gauche
+Name[gl]=Rotar para a esquerda
+Name[it]=Ruota a sinistra
+Name[ru]=Повернуть влево
+Exec=pdf-tools-jam-kdialog left %F
+
+[Desktop Action rotate_right]
+Icon=object-rotate-right
+Name=Rotate to right
+Name[de]=Nach rechts drehen
+Name[es]=Rotar a la derecha
+Name[fr]=Rotation droite
+Name[gl]=Rotar para a direita
+Name[it]=Ruota a destra
+Name[ru]=Повернуть вправо
+Exec=pdf-tools-jam-kdialog right %F
+
+[Desktop Action overturn]
+Icon=go-down
+Name=Overturn
+Name[de]=Umdrehen
+Name[es]=Invertir
+Name[fr]=Renverser
+Name[gl]=Inverter
+Name[it]=Capovolgi
+Name[ru]=Перевернуть
+Exec=pdf-tools-jam-kdialog overturn %F
+
+[Desktop Action flip]
+Icon=object-flip-horizontal
+Name=To flip horizontal
+Name[de]=Horizontal kippen
+Name[es]=Voltear horizontalmente
+Name[fr]=Retourner horizontal
+Name[gl]=Para virar horizontal
+Name[it]=Rifletti orizzontalmente
+Name[ru]=Отразить по горизонтали
+Exec=pdf-tools-jam-kdialog flip %F
+
+#---------------------------------------------------------------------------------------------------------------------------------------------------
+
+[Desktop Action info]
+Icon=help-about
+Name=Document information
+Name[de]=Dokument-Informationen
+Name[es]=Información del documento
+Name[fr]=Informations sur le document
+Name[gl]=Informaçom do documento
+Name[it]=Informazioni sul documento
+Name[ru]=Информация о документе
+Exec=pdf-tools-info-kdialog %F
+
+#---------------------------------------------------------------------------------------------------------------------------------------------------
+
+[Desktop Action print]
+Icon=printer
+Name=Print selected documents
+Name[de]=Ausgewählte Dokumente drucken
+Name[fr]=Imprimer les documents sélectionnés
+Name[it]=Stampa i documenti selezionati
+Name[ru]=Распечатать выбранные документы
+Exec=pdf-tools-print-kdialog %F

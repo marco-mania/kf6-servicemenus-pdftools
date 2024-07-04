@@ -1,0 +1,120 @@
+#
+# 	Part of kde-service-menu-pdf Version 2.3
+# 	Copyright (C) 2007-2019 Giuseppe Benigno <giuseppe.benigno(at)gmail.com>
+#
+# 	This program is free software: you can redistribute it and/or modify
+# 	it under the terms of the GNU General Public License as published by
+# 	the Free Software Foundation, either version 3 of the License, or
+# 	(at your option) any later version.
+#
+# 	This program is distributed in the hope that it will be useful,
+# 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+# 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# 	GNU General Public License for more details.
+#
+# 	You should have received a copy of the GNU General Public License
+# 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+[Desktop Entry]
+Type=Service
+ServiceTypes=KonqPopupMenu/Plugin
+MimeType=application/pdf;
+Actions=nup_2x1;nup_2x2;nup_2x3;nup_2x4;nup_custom;_SEPARATOR_;booklet;
+Name=PDF Repaginate service menu
+X-KDE-Submenu=Repaginate
+X-KDE-Submenu[de]=Seiten pro Blatt
+X-KDE-Submenu[es]=Repaginar
+X-KDE-Submenu[fr]=Repaginer
+X-KDE-Submenu[gl]=Repaginar
+X-KDE-Submenu[it]=Rimpagina
+X-KDE-Submenu[pt]=Repaginate
+X-KDE-Submenu[sr]=Repaginate
+X-KDE-Submenu[sr@Latn]=Repaginate
+X-KDE-Submenu[ru]=Разбивка на страницы
+
+[Desktop Action nup_2x1]
+Icon=page-2sides
+Name=Convert 2x1 (2 pages per sheet)
+Name[de]=Umwandeln nach 2x1 (2 Seiten pro Blatt)
+Name[es]=Convertir a 2x1 (2 páginas por hoja)
+Name[fr]=Conversion 2x1 (2 pages par feuille)
+Name[gl]=Converter em 2x1 (2 páginas por folha)
+Name[it]=Rimpagina 2x1 (2 pagine per foglio)
+Name[pt]=Converter em 2x1 (2 páginas por folha)
+Name[sr]=Конверзија 2x1 (2 стране по листу)
+Name[sr@Latn]=Konverzija 2x1 (2 strane po listu)
+Name[ru]=Преобразование 2x1 (2 страницы на листе)
+Exec=pdf-tools-nup-kdialog 2x1 %F
+
+[Desktop Action nup_2x2]
+Icon=page-4sides
+Name=Convert 2x2 (4 pages per sheet)
+Name[de]=Umwandeln nach 2x2 (4 Seiten pro Blatt)
+Name[es]=Convertir a 2x2 (4 páginas por hoja)
+Name[fr]=Conversion 2x2 (4 pages par feuille)
+Name[gl]=Converter em 2x2 (4 páginas por folha)
+Name[it]=Rimpagina 2x2 (4 pagine per foglio)
+Name[sr]=Конверзија 2x2 (4 стране по листу)
+Name[sr@Latn]=Konverzija 2x2 (4 strane po listu)
+Name[pt]=Converter em 2x2 (4 páginas por folha)
+Name[ru]=Преобразование 2x2 (4 страницы на листе)
+Exec=pdf-tools-nup-kdialog 2x2 %F
+
+[Desktop Action nup_2x3]
+Icon=page-3sides
+Name=Convert 2x3 (6 pages per sheet)
+Name[de]=Umwandeln nach 2x3 (6 Seiten pro Blatt)
+Name[es]=Convertir a 2x3 (6 páginas por hoja)
+Name[fr]=Conversion 2x3 (6 pages par feuille)
+Name[gl]=Converter em 2x3 (6 páginas por folha)
+Name[it]=Rimpagina 2x3 (6 pagine per foglio)
+Name[sr]=Конверзија 2x3 (6 страница по листу)
+Name[sr@Latn]=Konverzija 2x3 (6 stranica po listu)
+Name[pt]=Converter em 2x3 (6 páginas por folha)
+Name[ru]=Преобразование 2x3 (6 страниц на листе)
+Exec=pdf-tools-nup-kdialog 2x3 %F
+
+[Desktop Action nup_2x4]
+Icon=page-4sides
+Name=Convert 2x4 (8 pages per sheet)
+Name[de]=Umwandeln nach 2x4 (8 Seiten pro Blatt)
+Name[es]=Convertir a 2x4 (8 páginas por hoja)
+Name[fr]=Conversion 2x4 (8 pages par feuille)
+Name[gl]=Converter em 2x4 (8 páginas por folha)
+Name[it]=Rimpagina 2x4 (8 pagine per foglio)
+Name[sr]=Конверзија 2x4 (8 страница по листу)
+Name[sr@Latn]=Konverzija 2x4 (8 stranica po listu)
+Name[pt]=Converter em 2x4 (8 páginas por folha)
+Name[ru]=Преобразование 2x4 (8 страниц на листе)
+Exec=pdf-tools-nup-kdialog 2x4 %F
+
+[Desktop Action nup_custom]
+Icon=page-simple
+Name=Custom Repagination
+Name[de]=Eigene Konstellation
+Name[es]=Conversión personalizada
+Name[fr]=Conversion personalisée
+Name[gl]=Conversom personalizada
+Name[it]=Rimpaginazione personalizzata
+Name[sr]=Персонализована конверзија
+Name[sr@Latn]=Personalizovana konverzija
+Name[pt]=Conversão personalizada
+Name[ru]=Своя разбивка на страницы
+Exec=pdf-tools-nup-kdialog custom %F
+
+#----------------------------------------
+
+[Desktop Action booklet]
+Icon=application-pdf
+Name=Booklet
+Name[de]=Broschüre
+Name[es]=Folleto
+Name[fr]=Livret
+Name[gl]=Folheto
+Name[it]=Opuscolo
+Name[sr]=Брошура
+Name[sr@Latn]=Booklet
+Name[pt]=Livreto
+Name[ru]=буклет
+Exec=pdf-tools-book-kdialog %F

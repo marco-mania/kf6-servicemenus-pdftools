@@ -1,0 +1,221 @@
+#!/usr/bin/bash
+#
+# 	Part of kde-service-menu-pdf Version 2.3
+# 	Copyright (C) 2007-2019 Giuseppe Benigno <giuseppe.benigno(at)gmail.com>
+#
+# 	This program is free software: you can redistribute it and/or modify
+# 	it under the terms of the GNU General Public License as published by
+# 	the Free Software Foundation, either version 3 of the License, or
+# 	(at your option) any later version.
+#
+# 	This program is distributed in the hope that it will be useful,
+# 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+# 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# 	GNU General Public License for more details.
+#
+# 	You should have received a copy of the GNU General Public License
+# 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+new_line="
+"
+
+#### languages strings messages #################
+# Syntax for strings name is: msg_[$action]_$window_[$section]
+# For languages as sr@Latn use srLatn
+
+load_language_en () {
+	msg_common_software_not_found_title="Component not found"
+	msg_common_pdf2djvu_not_found_text="Software pdf2djvu not found!"
+	msg_common_action_not_found_text="The requested action is not implemented."
+	msg_common_file_not_found="File not found."
+	msg_common_finish_title="Conversion of document \"${file_name}\""
+	msg_common_finish_ok="Done."
+	msg_common_finish_error="An error has occurred."
+
+	msg_png_dpi_title="Document resolution"
+	msg_png_dpi_text="Please write DPI resolution for the document. Right range values is from 75 to 6000. Default is 300 DPI."
+
+	msg_options_title="Advanced options"
+	msg_options_text="Advanced options"
+	msg_options_monochrome="Render as monochrome bitmaps."
+	msg_options_no_metadata="Don´t extract the metadata."
+	msg_options_noHyperlinks="Don´t extract hyperlinks."
+
+	msg_alert_overwrite_title="Overwrite all?"
+	msg_alert_overwrite_text="One or more destination files exist! Overwrite all?"
+	msg_save_file_title="Save document"
+}
+
+load_language_fr () {
+	msg_common_software_not_found_title="Composant non trouvé"
+	msg_common_pdf2djvu_not_found_text="Logiciel pdf2djvu non trouvé!"
+	msg_common_action_not_found_text="L'action demandée n'est pas implémentée."
+	msg_common_finish_title="Conversion du document \"${file_name}\""
+	msg_common_file_not_found="Fichier non trouvé."
+	msg_common_finish_ok="Terminée."
+	msg_common_finish_error="Une erreur est survenue."
+
+	msg_png_dpi_title="Résolution du document"
+	msg_png_dpi_text="Saisissez la résolution DPI pour le document. Les valeurs vont de 75 à 6000. La résolution par défaut est de 300 DPI."
+
+	msg_options_title="Options avancées"
+	msg_options_text="Options avancées"
+	msg_options_monochrome="Rendu bitmaps monochrome"
+	msg_options_no_metadata="Ne pas extraire les métadonnées."
+	msg_options_noHyperlinks="Ne pas extraire les hyperliens."
+
+	msg_alert_overwrite_title="Tout écraser?"
+	msg_alert_overwrite_text="Un ou plusieurs fichiers de destination existe! Tout écraser?"
+	msg_save_file_title="Sauver le document"
+}
+
+load_language_it () {
+	msg_common_software_not_found_title="Componente non trovato"
+	msg_common_pdf2djvu_not_found_text="Il software pdf2djvu non è stato trovato!"
+	msg_common_action_not_found_text="L'azione richiesta non è implementata."
+	msg_common_file_not_found="File non trovato."
+	msg_common_finish_title="Conversione del documento \"${file_name}\""
+	msg_common_finish_ok="Conclusa."
+	msg_common_finish_error="Si è verificato un errore."
+
+	msg_png_dpi_title="Risoluzione"
+	msg_png_dpi_text="Pre favore scrivi la risoluzione voluta per il documento finale. Valori validi sono compresi tra 75 e 6000. 300 DPI è il valore predefinito."
+
+	msg_options_title="Opzioni avanzate"
+	msg_options_text="Opzioni avanzate"
+	msg_options_monochrome="Renderizza come immagini monocromatiche"
+	msg_options_no_metadata="Non estrarre i metadati."
+	msg_options_noHyperlinks="Non estrarre i collegamenti ipertestuali."
+
+	msg_alert_overwrite_title="Sovrascrivi tutti?"
+	msg_alert_overwrite_text="Uno o più file destinazione esistono già! Sovrascriverli tutti?"
+	msg_save_file_title="Salva documento"
+}
+
+load_language_ru () {
+	msg_common_software_not_found_title="Компонент не найден"
+	msg_common_pdf2djvu_not_found_text="Программное обеспечение pdf2djvu не найдено!"
+	msg_common_action_not_found_text="Запрошенное действие не выполнено."
+	msg_common_file_not_found="Файл не найден."
+	msg_common_finish_title="Преобразование документа \"${file_name}\""
+	msg_common_finish_ok="Готово."
+	msg_common_finish_error="Произошла ошибка."
+
+	msg_png_dpi_title="Разрешение документа"
+	msg_png_dpi_text="Пожалуйста, напишите DPI разрешение для документа. Правильный диапазон значений от 75 до 6000. По умолчанию 300 DPI."
+
+	msg_options_title="Дополнительные настройки"
+	msg_options_text="Дополнительные настройки"
+	msg_options_monochrome="Рендер как монохромные растровые изображения."
+	msg_options_no_metadata="Не извлекать метаданные."
+	msg_options_noHyperlinks="Не извлекать гиперссылки."
+
+	msg_alert_overwrite_title="Перезаписать все?"
+	msg_alert_overwrite_text="Один или несколько файлов назначения существуют! Перезаписать все?"
+	msg_save_file_title="Сохранить документ"
+}
+
+load_language () {
+	## Load localized strings AFTER english strings
+	## - if localized strings not found use english for default
+	## - if localized strings are incomplete use english only fot missing strings :-)
+	load_language_en && [ "${lang}" != "en" ] && load_language_${lang}
+}
+
+lang=${LANGUAGE%%:*}
+type load_language_${lang} > /dev/null || lang='en'
+load_language
+
+################################################################################
+
+help () {
+	echo
+	echo "USE:\t\t${0##*/} dpi-type files"
+	echo
+	echo "dpi-type:\tdpi 300, dpi 600, custom, advanced"
+	echo "files:\t\tfile1 file2 ..."
+	echo
+	echo "example:\t${0##*/} dpi 300 /home/user/file1.pdf /home/user/file2.pdf"
+	echo
+	exit 0
+}
+
+advanced () {
+	[ $# -gt 1 ] && multi_selection="true" || unset multi_selection
+
+	if [ ! "$options" ]; then
+		options=$("${kdialog_bin}" --title "${msg_options_title}" --checklist "${msg_options_text}" __monochrome "${msg_options_monochrome}" off __no-metadata "${msg_options_no_metadata}" off __no-hyperlinks "${msg_options_noHyperlinks}" off --separate-output) || exit 0
+		options=$(echo ${options} | sed 'y/_/-/')
+	fi
+
+	[ ! "$dpi" ] && { dpi=$("${kdialog_bin}" --title "${msg_png_dpi_title}" --inputbox "${msg_png_dpi_text}" "300") || exit 0; }
+
+	while [ $# -ne 0 ]; do
+		## Input files must have absolute path!
+		work_dir="${1%/*}"; [ ! -d "${work_dir}" ] && work_dir="$(pwd)"
+		file_name="${1##*/}"
+		base_file_name="${file_name%.*}"
+
+		## Reload language strings with current variables
+		load_language
+
+		output_file_name="${base_file_name} (${dpi} dpi).djvu"
+		if [ -e "${output_file_name}" ]; then
+			if [ "$multi_selection" ]; then
+				if [ ! "${overwrite_all}" ]; then		# if ${overwrite_all} is unset
+					"${kdialog_bin}" --title "${msg_alert_overwrite_title}" --yesnocancel "${msg_alert_overwrite_text}"
+					case "$?" in
+						0)	overwrite_all="true";;		# click on Yes
+						1)	overwrite_all="false";;		# click on No
+						2)	exit 0;;						# click on Cancel
+						esac
+				fi
+				if [ "${overwrite_all}" = "false" ]; then
+					output_file_name=$("${kdialog_bin}" --title "${msg_save_file_title}" --getsavefilename "${work_dir}/${base_file_name}.djvu" image/vnd.djvu) || exit 0
+				fi
+			else
+				output_file_name=$("${kdialog_bin}" --title "${msg_save_file_title}" --getsavefilename "${work_dir}/${base_file_name}.djvu" image/vnd.djvu) || exit 0
+			fi
+		fi
+
+		[ ! -f "${work_dir}/${file_name}" ] && shift && "${kdialog_bin}" --title "${msg_common_finish_title}" --passivepopup "${msg_common_file_not_found}" 5 && continue
+
+		msg=$(${pdf2djvu_bin} -o "${output_file_name}" --dpi="${dpi}" ${options} "${1}" 2>&1) && \
+		"${kdialog_bin}" --icon image-vnd.djvu --title "${msg_common_finish_title}" --passivepopup "${msg_common_finish_ok}" 5 || \
+		{ "${kdialog_bin}" --title "${msg_common_finish_title}" --detailederror "${msg_common_finish_error}" "${msg}"; exit 2; }
+
+		shift
+	done
+}
+
+custom () {
+	options=" "
+	advanced "${@}"
+}
+
+dpi () {
+	dpi="${1}"
+	shift
+	custom "${@}"
+}
+
+################################################################################
+
+[ "${1}" = "-h" ] || [ "${1}" = "--help" ] || [ ${#} -lt 2 ] && help
+
+kdialog_bin=$(which kdialog)
+[ -z "${kdialog_bin}" ] && echo "kdialog not found!" && exit 1
+
+pdf2djvu_bin=$(which pdf2djvu)
+[ -z "${pdf2djvu_bin}" ] && "${kdialog_bin}" --title "${msg_common_software_not_found_title}" --error "${msg_common_pdf2djvu_not_found_text}" && exit 2
+
+action="${1}"
+shift
+
+type "${action}" >/dev/null 2>&1 || \
+	{ "${kdialog_bin}" --title "${msg_common_software_not_found_title}" --error "${msg_common_action_not_found_text}" && exit 3; }
+
+"${action}" "${@}"
+
+exit 0

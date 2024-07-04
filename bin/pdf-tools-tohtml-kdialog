@@ -1,0 +1,303 @@
+#!/usr/bin/bash
+#
+# 	Part of kde-service-menu-pdf Version 2.3
+# 	Copyright (C) 2007-2019 Giuseppe Benigno <giuseppe.benigno(at)gmail.com>
+#
+# 	This program is free software: you can redistribute it and/or modify
+# 	it under the terms of the GNU General Public License as published by
+# 	the Free Software Foundation, either version 3 of the License, or
+# 	(at your option) any later version.
+#
+# 	This program is distributed in the hope that it will be useful,
+# 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+# 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# 	GNU General Public License for more details.
+#
+# 	You should have received a copy of the GNU General Public License
+# 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+new_line="
+"
+
+#### languages strings messages #################
+# Syntax for strings name is: msg_[$action]_$window_[$section]
+# For languages as sr@Latn use srLatn
+
+load_language_de () {
+	msg_common_software_not_found_title="Komponente wurde nicht gefunden"
+	msg_common_pdfinfo_not_found_text="Die pdfinfo Software wurde nicht gefunden! Bitte installieren Sie poppler-utils."
+	msg_common_pdftohtml_not_found_text="Die pdftohtml Software wurde nicht gefunden! Bitte installieren Sie poppler-utils."
+	msg_common_action_not_found_text="Die angeforderte Aktion ist nicht implementiert."
+	msg_common_file_not_found="Datei nicht gefunden."
+	msg_common_finish_title="Konvertierung des Dokuments \"${file_name}\""
+	msg_common_finish_ok="Fertig."
+	msg_common_finish_error="Ein Fehler ist aufgetreten."
+
+	msg_insert_password_title="Passwort eingeben"
+	msg_insert_password_usr="Bitte das Benutzerpasswort:"
+	msg_insert_password_own="Bitte das Masterpasswort:"
+
+	msg_input_pages_range_title="Seitenbereich eingeben"
+	msg_input_pages_range="Der Bereich wird durch die folgende Syntax definiert: ZUERST-ZULETZT${new_line}ZUERST und ZULETZT sind jeweils die erste und letzte Seite des Bereichs.${new_line}Wenn Sie auf die letzte Seite des Dokuments verweisen möchten, lassen Sie die Nummer weg.${new_line}${new_line}Beispiele:${new_line}  3 wird nur auf Seite 3 verarbeitet${new_line}  3- werden Seiten bis zur letzten 3 bearbeitet${new_line}  5-8 Seiten 5 bis 8 werden bearbeitet.${new_line}  -8 Seiten werden von 1 bis 8 verarbeitet${new_line}${new_line}Geben Sie den zu bearbeitenden Seitenbereich ein:"
+
+	msg_options_title="Eigenschaften"
+	msg_options="Optionen für die Umwandlung von \"${file_name}\" auswählen"
+	msg_options_replace_links=".pdf Links mit .html vertauschen"
+	msg_options_no_images="Bilder ignorieren"
+	msg_options_no_frames="Keine Rahmen erstellen (Alles auf einer Seite)"
+	msg_options_force_hidden_text="Versteckten Text mit herausziehen"
+	msg_options_no_merge="Abschnitte nicht zusammensetzen"
+	msg_options_no_drm="DRM-Einstellungen (Digital Restrictions Management) des Dokumentes überschreiben"
+
+	msg_alert_overwrite_title="Alles überschreiben?"
+	msg_alert_overwrite_text="Eine oder mehrere Zieldateien existieren! Alles überschreiben?"
+	msg_save_file_title="Dokument speichern"
+}
+
+load_language_en () {
+	msg_common_software_not_found_title="Component not found"
+	msg_common_pdfinfo_not_found_text="Software pdfinfo not found! Please, install poppler-utils."
+	msg_common_pdftohtml_not_found_text="Software pdftohtml not found! Please, install poppler-utils."
+	msg_common_action_not_found_text="The requested action is not implemented."
+	msg_common_file_not_found="File not found."
+	msg_common_finish_title="Conversion of document \"${file_name}\""
+	msg_common_finish_ok="Done."
+	msg_common_finish_error="An error has occurred."
+
+	msg_insert_password_title="Insert password"
+	msg_insert_password_usr="Please insert user password:"
+	msg_insert_password_own="Please insert main password:"
+
+	msg_input_pages_range_title="Input pages range"
+	msg_input_pages_range="The range is defined by the following syntax: FIRST-LAST${new_line}FIRST and LAST are, respectively, the first and last page of the range.${new_line}If you want to refer to the last page of the document , omit the number.${new_line}${new_line}Examples:${new_line}  3 will be processed only on page 3${new_line}  3- will be processed pages from number 3 up to the last${new_line}  5-8 pages 5 to 8 will be processed${new_line}  -8 pages will be processed from 1 to 8${new_line}${new_line}Enter the range of pages to be processed:"
+
+	msg_options_title="Preferences"
+	msg_options="Select options for conversion of \"${file_name}\""
+	msg_options_replace_links="Excange .pdf links with .html"
+	msg_options_no_images="Ignore images"
+	msg_options_no_frames="Generate no frames (all in one page)"
+	msg_options_force_hidden_text="Force hidden text extraction"
+	msg_options_no_merge="Do not merge paragraphs"
+	msg_options_no_drm="Override document DRM (Digital Restrictions Management) setting"
+
+	msg_alert_overwrite_title="Overwrite all?"
+	msg_alert_overwrite_text="One or more destination files exist! Overwrite all?"
+	msg_save_file_title="Save document"
+}
+
+load_language_fr () {
+	msg_common_software_not_found_title="Composant non trouvé"
+	msg_common_pdfinfo_not_found_text="Logiciel pdfinfo non trouvé! S'il vous plaît, installez poppler-utils."
+	msg_common_pdftohtml_not_found_text="Logiciel pdftohtml non trouvé! S'il vous plaît, installez poppler-utils."
+	msg_common_action_not_found_text="L'action demandée n'est pas implémentée."
+	msg_common_file_not_found="Fichier non trouvé."
+	msg_common_finish_title="Conversion du document \"${file_name}\""
+	msg_common_finish_ok="Terminée."
+	msg_common_finish_error="Une erreur est survenue."
+
+	msg_insert_password_title="Saisissez le mot de passe"
+	msg_insert_password_usr="Saisissez le mot de passe utilisateur:"
+	msg_insert_password_own="Saisissez le mot de passe Administrateur:"
+
+	msg_input_pages_range_title="Sélection de pages"
+	msg_input_pages_range="La plage est définie par la syntaxe suivante: PREMIER-DERNIER${new_line}PREMIER et DERNIER sont respectivement la première et la dernière page de la plage.${new_line}Si vous souhaitez vous référer à la dernière page du document, omettez le numéro.${new_line}${new_line}Exemples:${new_line}  3 seront traités uniquement à la page 3${new_line}  3- seront traitées pages du numéro 3 à la dernière${new_line}  5-8 pages 5 à 8 seront traitées${new_line}  -8 pages seront traitées de 1 à 8${new_line}${new_line}Entrez la plage de pages à traiter:"
+
+	msg_options_title="Préferences"
+	msg_options="Choisissez les options de conversion pour \"${file_name}\""
+	msg_options_replace_links="Changer les liens .pdf en .html"
+	msg_options_no_images="Ignorer les images"
+	msg_options_no_frames="Ne pas générer de cadres (tout dans une seule page)"
+	msg_options_force_hidden_text="Forcer l'extraction de textes cachés"
+	msg_options_no_merge="Ne pas fusionner les paragraphes"
+	msg_options_no_drm="Ne pas retranscrire les DRM (Digital Restrictions Management)"
+
+	msg_alert_overwrite_title="Tout écraser?"
+	msg_alert_overwrite_text="Un ou plusieurs fichiers de destination existe! Tout écraser?"
+	msg_save_file_title="Sauver le document"
+}
+
+load_language_it () {
+	msg_common_software_not_found_title="Componente non trovato"
+	msg_common_pdfinfo_not_found_text="Il software pdfinfo non è stato trovato! Per favore, installa poppler-utils."
+	msg_common_pdftohtml_not_found_text="Il software pdftohtml non è stato trovato! Per favore, installa poppler-utils."
+	msg_common_action_not_found_text="L'azione richiesta non è implementata."
+	msg_common_file_not_found="File non trovato."
+	msg_common_finish_title="Conversione del documento \"${file_name}\""
+	msg_common_finish_ok="Conclusa."
+	msg_common_finish_error="Si è verificato un errore."
+
+	msg_insert_password_title="Inserisci Password"
+	msg_insert_password_usr="Per favore digita la password utente:"
+	msg_insert_password_own="Per favore digita la password principale:"
+
+	msg_input_pages_range_title="Selezione intervallo"
+	msg_input_pages_range="L'intervallo viene definito tramite la seguente sintassi: PRIMA-ULTIMA${new_line}PRIMA e ULTIMA sono, rispettivamente, la prima e l'ultima pagina dell'intervallo.${new_line}Se ci si vuole riferire all'ultima pagina del documento, omettere il numero.${new_line}${new_line}Esempi:${new_line}  3	verrà elaborata solo la pagina 3${new_line}  3-	veranno elaborate le pagine dalla numero 3 fino all'ultima${new_line}  5-8	verranno elaborate le pagine dalla 5 alla 8${new_line}  -8	verranno elaborate le pagine dalla 1 alla 8${new_line}${new_line}Inserire l'intervallo di pagine da elaborare:"
+
+	msg_options_title="Preferenze"
+	msg_options="Seleziona le opzioni per la conversione di \"${file_name}\""
+	msg_options_replace_links="Sostituisci i collegamenti .pdf con .html"
+	msg_options_no_images="Ignora le immagini"
+	msg_options_no_frames="Non generare frames (tutto in una pagina)"
+	msg_options_force_hidden_text="Forza l'estrazione del testo nascosto"
+	msg_options_no_merge="Non unire i paragrafi"
+	msg_options_no_drm="Ignora le impostazioni DRM (Digital Restrictions Management)"
+
+	msg_alert_overwrite_title="Sovrascrivi tutti?"
+	msg_alert_overwrite_text="Uno o più file destinazione esistono già! Sovrascriverli tutti?"
+	msg_save_file_title="Salva documento"
+}
+
+load_language_ru () {
+	msg_common_software_not_found_title="Компонент не найден"
+	msg_common_pdfinfo_not_found_text="Программное обеспечение pdfinfo не найдено! Установите poppler-utils."
+	msg_common_pdftohtml_not_found_text="Программное обеспечение pdftohtml не найдено! Установите poppler-utils."
+	msg_common_action_not_found_text="Запрошенное действие не выполнено."
+	msg_common_file_not_found="Файл не найден."
+	msg_common_finish_title="Преобразование документа \"${file_name}\""
+	msg_common_finish_ok="Готово."
+	msg_common_finish_error="Произошла ошибка."
+
+	msg_insert_password_title="Вставить пароль"
+	msg_insert_password_usr="Пожалуйста, введите пароль пользователя:"
+	msg_insert_password_own="Пожалуйста, введите основной пароль:"
+
+	msg_input_pages_range_title="Диапазон входящих страниц"
+	msg_input_pages_range="Диапазон определяется следующим синтаксисом: ПЕРВЫЙ-ПРОШЛОЙ${new_line}ПЕРВЫЙ и ПРОШЛОЙ - соответственно, первая и последняя страница диапазона.${new_line}Если вы хотите обратиться к последней странице документа, опустите номер.${new_line}${new_line}Примеры:${new_line}  3 будут обработаны только на странице 3${new_line}  3- будут обрабатываться страницы от номера 3 до последнего${new_line}  5-8 страниц с 5 по 8 будут обработаны${new_line}  -8 страниц будет обработано от 1 до 8${new_line}${new_line}Введите диапазон страниц для обработки:"
+
+	msg_options_title="Параметры"
+	msg_options="Выбор параметров для конвертации \"${file_name}\""
+	msg_options_replace_links="Заменить ссылки с .pdf на .html"
+	msg_options_no_images="Игнорировать изображения"
+	msg_options_no_frames="Исключить создание кадров (все на одной странице)"
+	msg_options_force_hidden_text="Принудительно извлекать скрытый текст"
+	msg_options_no_merge="Не объединять абзацы"
+	msg_options_no_drm="Переопределить настройки DRM документа (технические средства защиты авторских прав)"
+
+	msg_alert_overwrite_title="Перезаписать все?"
+	msg_alert_overwrite_text="Один или несколько файлов назначения существуют! Перезаписать все?"
+	msg_save_file_title="Сохранить документ"
+}
+
+load_language () {
+	## Load localized strings AFTER english strings
+	## - if localized strings not found use english for default
+	## - if localized strings are incomplete use english only fot missing strings :-)
+	load_language_en && [ "${lang}" != "en" ] && load_language_${lang}
+}
+
+lang=${LANGUAGE%%:*}
+type load_language_${lang} > /dev/null || lang='en'
+load_language
+
+################################################################################
+
+help () {
+	echo
+	echo "USE:\t\t${0##*/} pages files"
+	echo
+	echo "pages:\t\tallpages, selectpages"
+	echo "files:\t\tfile1 file2 ..."
+	echo
+	echo "example:\t${0##*/} allpages /home/user/file1.pdf /home/user/file2.pdf"
+	echo
+	exit 0
+}
+
+checkIfProtected () {
+	is_protected=$("${pdfinfo_bin}" "${1}" 2>&1 | sed "s/.*Incorrect password.*/Encrypted: yes/" | grep '^Encrypted:' | sed "s/^[^ ]* *\([^ ]*\).*/\1/")
+}
+
+askPassword () {
+	password=$("${kdialog_bin}" --title "${msg_insert_password_title}" --password "${msg_insert_password_usr}") || exit 0
+	password=$(echo ${password} |grep '^.' |sed 's/^/-upw /')
+
+	if [ -z "${password}" ]; then
+		password=$("${kdialog_bin}" --title "${msg_insert_password_title}" --password "${msg_insert_password_own}") || exit 0
+		password=$(echo ${password} |grep '^.' |sed 's/^/-opw /')
+	fi
+
+	[ -z "${password}" ] && password=''
+}
+
+askRange () {
+	range=$("${kdialog_bin}" --title "${msg_input_pages_range_title}" --inputbox "${msg_input_pages_range}" "1-") || exit 0
+	range=$(echo "${range}" | sed 's/[[:blank:]]*//g' | sed 's/-end//' | sed 's/\(^[0-9][0-9]*\)/-f \1/' | sed 's/\(^-f [0-9][0-9]*\)-\([0-9][0-9]*\)/\1 -l \2/' | sed 's/^-\([0-9][0-9]*\)/-l \1/')
+}
+
+selectpages () {
+	checkIfProtected "${1}"
+
+	[ ${is_protected} = 'yes' ] && askPassword
+
+	[ -z "${range}" ] && askRange || range=''
+
+	options=$("${kdialog_bin}" --title "${msg_options_title}" --checklist "${msg_options}" _p "${msg_options_replace_links}" on _i "${msg_options_no_images}" off _noframes "${msg_options_no_frames}" on _hidden "${msg_options_force_hidden_text}" off _nomerge "${msg_options_no_merge}" off _nodrm "${msg_options_no_drm}" on --separate-output) || exit
+	options=$(echo ${options} | sed 'y/_/-/')
+
+	[ $# -gt 1 ] && multi_selection="true" || unset multi_selection
+
+	while [ $# -ne 0 ]; do
+		work_dir="${1%/*}"; [ ! -d "${work_dir}" ] && work_dir="$(pwd)"
+		file_name="${1##*/}"
+		base_file_name="${file_name%.*}"
+
+		## Reload language strings with current variables
+		load_language
+
+		output_file_name="${work_dir}/${base_file_name}.html"
+		if [ -e "${output_file_name}" ]; then
+			if [ "$multi_selection" ]; then			# if you selected multiple files
+				if [ ! "${overwrite_all}" ]; then		# if ${overwrite_all} is unset
+					"${kdialog_bin}" --title "${msg_alert_overwrite_title}" --yesnocancel "${msg_alert_overwrite_text}"
+					case "$?" in
+						0)	overwrite_all="true";;		# click on Yes
+						1)	overwrite_all="false";;		# click on No
+						2)	exit 0;;					# click on Cancel
+						esac
+				fi
+				if [ "${overwrite_all}" = "false" ]; then
+					output_file_name=$("${kdialog_bin}" --title "${msg_save_file_title}" --getsavefilename "${output_file_name}" text/html) || exit 0
+				fi
+			else
+				output_file_name=$("${kdialog_bin}" --title "${msg_save_file_title}" --getsavefilename "${output_file_name}" text/html) || exit 0
+			fi
+		fi
+
+		[ ! -f "${work_dir}/${file_name}" ] && shift && "${kdialog_bin}" --title "${msg_common_finish_title}" --passivepopup "${msg_common_file_not_found}" 5 && continue
+
+		msg=$("${pdftohtml_bin}" ${options} ${password} ${range} "${work_dir}/${file_name}" "${output_file_name}" 2>&1) && \
+		"${kdialog_bin}" --icon viewhtml --title "${msg_common_finish_title}" --passivepopup "${msg_common_finish_ok}" 5 || \
+		{ "${kdialog_bin}" --title "${msg_common_finish_title}" --detailederror "${msg_common_finish_error}" "${msg}"; exit 2; }
+
+		shift
+	done
+}
+
+allpages () {
+	range='all'
+	selectpages "${@}"
+}
+
+################################################################################
+
+[ "${1}" = "-h" ] || [ "${1}" = "--help" ] || [ ${#} -lt 2 ] && help
+
+kdialog_bin=$(which kdialog)
+[ -z "${kdialog_bin}" ] && echo "kdialog not found!" && exit 1
+
+pdfinfo_bin=$(which pdfinfo)
+[ -z "${pdfinfo_bin}" ] && "${kdialog_bin}" --title "${msg_common_software_not_found_title}" --error "${msg_common_pdfinfo_not_found_text}" && exit 2
+
+pdftohtml_bin=$(which pdftohtml)
+[ -z "${pdftohtml_bin}" ] && "${kdialog_bin}" --title "${msg_common_software_not_found_title}" --error "${msg_common_pdftohtml_not_found_text}" && exit 2
+
+action="${1}"
+shift
+
+type "${action}" >/dev/null 2>&1 || \
+	{ "${kdialog_bin}" --title "${msg_common_software_not_found_title}" --error "${msg_common_action_not_found_text}" && exit 3; }
+
+"${action}" "${@}"
+
+exit 0

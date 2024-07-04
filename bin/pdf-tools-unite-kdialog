@@ -1,0 +1,207 @@
+#!/usr/bin/bash
+#
+# 	Part of kde-service-menu-pdf Version 2.3
+# 	Copyright (C) 2007-2019 Giuseppe Benigno <giuseppe.benigno(at)gmail.com>
+#
+# 	This program is free software: you can redistribute it and/or modify
+# 	it under the terms of the GNU General Public License as published by
+# 	the Free Software Foundation, either version 3 of the License, or
+# 	(at your option) any later version.
+#
+# 	This program is distributed in the hope that it will be useful,
+# 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+# 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# 	GNU General Public License for more details.
+#
+# 	You should have received a copy of the GNU General Public License
+# 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+new_line="
+"
+
+#### languages strings messages #################
+# Syntax for strings name is: msg_[$action]_$window_[$section]
+# For languages as sr@Latn use srLatn
+
+load_language_de () {
+	msg_common_software_not_found_title="Komponente wurde nicht gefunden"
+	msg_common_pdfunite_not_found_text="Die pdfunite Software wurde nicht gefunden! Bitte installieren Sie poppler-utils"
+	msg_common_action_not_found_text="Die angeforderte Aktion ist nicht implementiert."
+	msg_common_file_not_found="Datei nicht gefunden."
+	msg_common_save_file_title="Datei speichern ..."
+	msg_common_finish_ok="Fertig."
+	msg_common_finish_error="Ein Fehler ist aufgetreten."
+
+	msg_merge_one_file_only="Eine Datei kann nicht verbunden werden. Bitte mindestens zwei Dateien auswählen."
+	msg_merge_finish_title="Verbindung der Dokumente \"${base_file_name_list}\""
+
+	msg_add_open_file="Wählen Sie das hinzuzufügende Dokument aus"
+	msg_add_finish_title="Dokument zu  \"${base_file_name}\" hinzugefügt."
+}
+
+load_language_en () {
+	msg_common_software_not_found_title="Component not found"
+	msg_common_pdfunite_not_found_text="Software pdfunite not found! Please, install poppler-utils."
+	msg_common_action_not_found_text="The requested action is not implemented."
+	msg_common_file_not_found="File not found."
+	msg_common_save_file_title="Save file ..."
+	msg_common_finish_ok="Done."
+	msg_common_finish_error="An error has occurred."
+
+	msg_merge_one_file_only="Can't merge one file only. Please select not less than two files."
+	msg_merge_finish_title="Merging documents \"${base_file_name_list}\""
+
+	msg_add_open_file="Select document to add"
+	msg_add_finish_title="Added a document to \"${base_file_name}\""
+}
+
+load_language_fr () {
+	msg_common_software_not_found_title="Composant non trouvé"
+	msg_common_pdfunite_not_found_text="Logiciel pdfunite non trouvé! S'il vous plaît, installez poppler-utils."
+	msg_common_action_not_found_text="L'action demandée n'est pas implémentée."
+	msg_common_file_not_found="Fichier non trouvé."
+	msg_common_save_file_title="Sauver le fichier ..."
+	msg_common_finish_ok="Terminé."
+	msg_common_finish_error="Une erreur est survenue."
+
+	msg_merge_one_file_only="Impossible de joindre un seul fichier. Sélectionnez au moins deux fichiers !"
+	msg_merge_finish_title="Documents joints \"${base_file_name_list}\""
+
+	msg_add_open_file="Sélectionnez le document à ajouter"
+	msg_add_finish_title="Ajout d'un document à \"${base_file_name}\""
+}
+
+load_language_it () {
+	msg_common_software_not_found_title="Componente non trovato"
+	msg_common_pdfunite_not_found_text="Il software pdfunite non è stato trovato! Per favore, installa poppler-utils."
+	msg_common_action_not_found_text="L'azione richiesta non è implementata."
+	msg_common_file_not_found="File non trovato."
+	msg_common_save_file_title="Salva file ..."
+	msg_common_finish_ok="Completata."
+	msg_common_finish_error="Si è verificato un errore."
+
+	msg_merge_one_file_only="Non é possibile unire solo un file. Per favore, selezionane almeno due."
+	msg_merge_finish_title="Unione dei documenti \"${base_file_name_list}\""
+
+	msg_add_open_file="Seleziona il documento da aggiungere"
+	msg_add_finish_title="Aggiunta di un documento a \"${base_file_name}\""
+}
+
+load_language_ru () {
+	msg_common_software_not_found_title="Компонент не найден"
+	msg_common_pdfunite_not_found_text="Программное обеспечение pdfunite не найдено! Установите poppler-utils."
+	msg_common_action_not_found_text="Запрошенное действие не выполнено."
+	msg_common_file_not_found="Файл не найден."
+	msg_common_save_file_title="Сохранить файл ..."
+	msg_common_finish_ok="Готово."
+	msg_common_finish_error="Произошла ошибка."
+
+	msg_merge_one_file_only="Невозможно объединить только один файл. Пожалуйста, выберите не менее двух файлов."
+	msg_merge_finish_title="Соединение документов \"${base_file_name_list}\""
+
+	msg_add_open_file="Выберите документ для добавления"
+	msg_add_finish_title="Добавление документа к \"${base_file_name}\""
+}
+
+load_language () {
+	## Load localized strings AFTER english strings
+	## - if localized strings not found use english for default
+	## - if localized strings are incomplete use english only fot missing strings :-)
+	load_language_en && [ "${lang}" != "en" ] && load_language_${lang}
+}
+
+lang=${LANGUAGE%%:*}
+type load_language_${lang} > /dev/null || lang='en'
+load_language
+
+################################################################################
+
+help () {
+	echo
+	echo "USE:\t\t${0##*/} action files"
+	echo
+	echo "action:\t\tmerge, add"
+	echo "files:\t\tfile1 file2 ..."
+	echo
+	echo "example:\t${0##*/} merge /home/user/file1.pdf /home/user/file2.pdf"
+	echo
+	exit 0
+}
+
+## Merge many files in one.
+merge () {
+	if [ ${#} -lt 2 ]; then
+		"${kdialog_bin}" --sorry "${msg_merge_one_file_only}" && exit 1
+	fi
+
+	## workdir=first file's directory
+	work_dir="${input%/*}" && [ ! -d "${work_dir}" ] && work_dir="$(pwd)"
+
+	base_file_name_list=""
+	for input in "${@}"; do
+		file_name="${input##*/}"
+		base_file_name="${file_name%.*}"
+		[ -n "${base_file_name_list}" ] && base_file_name_list="${base_file_name_list}, "
+		base_file_name_list="${base_file_name_list}${base_file_name}"
+	done
+
+	## Reload language strings with current variables
+	load_language
+
+	output_file_name="${work_dir}/${base_file_name_list}.pdf"
+	if [ -f "${output_file_name}" ]; then
+		output_file_name=$("${kdialog_bin}" --title "${msg_common_save_file_title}" --getsavefilename "${work_dir}/${output_file_name}" application/pdf) || exit 0
+	fi
+
+	msg=$("${pdfunite_bin}" "${@}" "${output_file_name}" 2>&1) && \
+		"${kdialog_bin}" --icon viewpdf --title "${msg_merge_finish_title}" --passivepopup "${msg_common_finish_ok}" 5 || \
+		{ "${kdialog_bin}" --title "${msg_merge_finish_title}" --detailederror "${msg_common_finish_error}" "${msg}"; exit 2; }
+}
+
+## Add one file to one or many.
+add () {
+	pdf_to_add=$("${kdialog_bin}" --title "${msg_add_open_file}" --getopenfilename " " application/pdf) || exit 0
+	pdf_to_addFileName="${pdf_to_add##*/}"
+	pdf_to_addBaseFileName="${pdf_to_addFileName%.*}"
+
+	for input in "${@}"; do
+		work_dir="${input%/*}" && [ ! -d "${work_dir}" ] && work_dir="$(pwd)"
+		file_name="${input##*/}"
+		base_file_name="${file_name%.*}"
+
+		## Reload language strings with current variables
+		load_language
+
+		output_file_name="${work_dir}/${base_file_name}, ${pdf_to_addBaseFileName}.pdf"
+		if [ -e "${output_file_name}" ]; then
+			output_file_name=$("${kdialog_bin}" --title "${msg_common_save_file_title}" --getsavefilename "${output_file_name}" application/pdf) || exit 0
+		fi
+
+		[ ! -f "${work_dir}/${file_name}" ] && shift && "${kdialog_bin}"--icon viewpdf --title "${msg_finish_title}" --passivepopup "${msg_common_file_not_found}" 5 && continue
+
+		msg=$("${pdfunite_bin}" "${input}" "${pdf_to_add}" "${output_file_name}" 2>&1) && \
+		"${kdialog_bin}" --icon viewpdf --title "${msg_add_finish_title}" --passivepopup "${msg_common_finish_ok}" 5 || \
+		{ "${kdialog_bin}" --title "${msg_add_finish_title}" --detailederror "${msg_common_finish_error}" "${msg}"; exit 2; }
+	done
+}
+
+################################################################################
+
+[ "${1}" = "-h" ] || [ "${1}" = "--help" ] || [ ${#} -lt 2 ] && help
+
+kdialog_bin=$(which kdialog)
+[ -z "${kdialog_bin}" ] && echo "kdialog not found!" && exit 1
+
+pdfunite_bin=$(which pdfunite)
+[ -z "${pdfunite_bin}" ] && "${kdialog_bin}" --title "${msg_common_software_not_found_title}" --error "${msg_common_pdfunite_not_found_text}" && exit 2
+
+action="${1}"
+shift
+
+type "${action}" >/dev/null 2>&1 || \
+	{ "${kdialog_bin}" --title "${msg_common_software_not_found_title}" --error "${msg_common_action_not_found_text}" && exit 3; }
+
+"${action}" "${@}"
+
+exit 0

@@ -1,0 +1,263 @@
+#!/usr/bin/bash
+#
+# 	Part of kde-service-menu-pdf Version 2.3
+# 	Copyright (C) 2007-2019 Giuseppe Benigno <giuseppe.benigno(at)gmail.com>
+#
+# 	This program is free software: you can redistribute it and/or modify
+# 	it under the terms of the GNU General Public License as published by
+# 	the Free Software Foundation, either version 3 of the License, or
+# 	(at your option) any later version.
+#
+# 	This program is distributed in the hope that it will be useful,
+# 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+# 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# 	GNU General Public License for more details.
+#
+# 	You should have received a copy of the GNU General Public License
+# 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+new_line="
+"
+
+#### languages strings messages #################
+# Syntax for strings name is: msg_[$action]_$window_[$section]
+# For languages as sr@Latn use srLatn
+
+load_language_de () {
+	msg_common_software_not_found_title="Komponente wurde nicht gefunden"
+	msg_common_pdfinfo_not_found_text="Die pdfinfo Software wurde nicht gefunden! Bitte installieren Sie poppler-utils."
+	msg_common_pdfjam_not_found_text="Die pdfjam Software wurde nicht gefunden! Bitte installieren Sie texlive-extra-utils"
+	msg_common_action_not_found_text="Die angeforderte Aktion ist nicht implementiert."
+	msg_common_file_not_found="Datei nicht gefunden."
+	msg_common_finish_ok="Fertig."
+	msg_common_finish_error="Ein Fehler ist aufgetreten."
+
+	msg_rotate_left_save_file_name=" (links gedreht)"
+	msg_rotate_left_finish_title="Links ausrichten von Dokument \"${base_file_name}\""
+
+	msg_rotate_right_save_file_name=" (rechts gedreht)"
+	msg_rotate_right_finish_title="Rechts ausrichten von Dokument \"${base_file_name}\""
+
+	msg_rotate_overturn_save_file_name=" (umgedreht)"
+	msg_rotate_overturn_finish_title="Dokument \"${base_file_name}\" umdrehen"
+
+	msg_rotate_flip_save_file_name=" (Umdrehen)"
+	msg_rotate_flip_finish_title="Dokument kippen \"${base_file_name}\""
+}
+
+load_language_en () {
+	msg_common_software_not_found_title="Component not found"
+	msg_common_pdfinfo_not_found_text="Software pdfinfo not found! Please, install poppler-utils."
+	msg_common_pdfjam_not_found_text="Software pdfjam not found! Please, install texlive-extra-utils."
+	msg_common_action_not_found_text="The requested action is not implemented."
+	msg_common_file_not_found="File not found."
+	msg_common_finish_ok="Done."
+	msg_common_finish_error="An error has occurred."
+
+	msg_rotate_left_save_file_name=" (left rotated)"
+	msg_rotate_left_finish_title="Left rotation of document \"${base_file_name}\""
+
+	msg_rotate_right_save_file_name=" (right rotated)"
+	msg_rotate_right_finish_title="Right rotation of document \"${base_file_name}\""
+
+	msg_rotate_overturn_save_file_name=" (overturned)"
+	msg_rotate_overturn_finish_title="Overturn document \"${base_file_name}\""
+
+	msg_rotate_flip_save_file_name=" (flipped)"
+	msg_rotate_flip_finish_title="Flipping document \"${base_file_name}\""
+}
+
+load_language_fr () {
+	msg_common_software_not_found_title="Composant non trouvé"
+	msg_common_pdfinfo_not_found_text="Logiciel pdfinfo non trouvé! S'il vous plaît, installez poppler-utils."
+	msg_common_pdfjam_not_found_text="Logiciel pdfjam non trouvé! S'il vous plaît, installez texlive-extra-utils."
+	msg_common_action_not_found_text="L'action demandée n'est pas implémentée."
+	msg_common_file_not_found="Fichier non trouvé."
+	msg_common_finish_ok="Terminée."
+	msg_common_finish_error="Une erreur est survenue."
+
+	msg_rotate_left_save_file_name=" (rotation gauche)"
+	msg_rotate_left_finish_title="Rotation à gauche du document \"${base_file_name}\""
+
+	msg_rotate_right_save_file_name=" (rotation droite)"
+	msg_rotate_right_finish_title="Rotation à droite du document \"${base_file_name}\""
+
+	msg_rotate_overturn_save_file_name=" (renversé)"
+	msg_rotate_overturn_finish_title="Renversement du document \"${base_file_name}\""
+
+	msg_rotate_flip_save_file_name=" (pour retourner)"
+	msg_rotate_flip_finish_title="Retourner le document \"${base_file_name}\""
+}
+
+load_language_it () {
+	msg_common_software_not_found_title="Componente non trovato"
+	msg_common_pdfinfo_not_found_text="Il software pdfinfo non è stato trovato! Per favore, installa poppler-utils."
+	msg_common_pdfjam_not_found_text="Il software pdfjam non è stato trovato! Per favore, installa texlive-extra-utils."
+	msg_common_action_not_found_text="L'azione richiesta non è implementata."
+	msg_common_file_not_found="File non trovato."
+	msg_common_finish_ok="Eseguita."
+	msg_common_finish_error="Si è verificato un errore."
+
+	msg_rotate_left_save_file_name=" (ruotato a sinistra)"
+	msg_rotate_left_finish_title="Rotazione a sinistra del documento \"${base_file_name}\""
+
+	msg_rotate_right_save_file_name=" (ruotato a destra)"
+	msg_rotate_right_finish_title="Rotazione a destra del documento \"${base_file_name}\""
+
+	msg_rotate_overturn_save_file_name=" (capovolto)"
+	msg_rotate_overturn_finish_title="Capovolgimento del documento \"${base_file_name}\""
+
+	msg_rotate_flip_save_file_name=" (riflesso)"
+	msg_rotate_flip_finish_title="Riflessione del documento \"${base_file_name}\""
+}
+
+load_language_ru () {
+	msg_common_software_not_found_title="Компонент не найден"
+	msg_common_pdfinfo_not_found_text="Программное обеспечение pdfinfo не найдено! Установите poppler-utils."
+	msg_common_pdfjam_not_found_text="Программное обеспечение pdfjam не найдено! Установите texlive-extra-utils."
+	msg_common_action_not_found_text="Запрошенное действие не выполнено."
+	msg_common_file_not_found="Файл не найден."
+	msg_common_finish_ok="Готово."
+	msg_common_finish_error="Произошла ошибка."
+
+	msg_rotate_left_save_file_name="${base_file_name} (повернут влево)"
+	msg_rotate_left_finish_title="Поворот документа влево \"${base_file_name}\""
+
+	msg_rotate_right_save_file_name="${base_file_name} (повернут право)"
+	msg_rotate_right_finish_title="Поворот документа вправо \"${base_file_name}\""
+
+	msg_rotate_overturn_save_file_name="${base_file_name} (перевернутый)"
+	msg_rotate_overturn_finish_title="Переворачивание документа \"${base_file_name}\""
+
+	msg_rotate_flip_save_file_name=" (Сделать сальто)"
+	msg_rotate_flip_finish_title="Перевернуть документ \"${base_file_name}\""
+}
+
+load_language () {
+	## Load localized strings AFTER english strings
+	## - if localized strings not found use english for default
+	## - if localized strings are incomplete use english only fot missing strings :-)
+	load_language_en && [ "${lang}" != "en" ] && load_language_${lang}
+}
+
+lang=${LANGUAGE%%:*}
+type load_language_${lang} > /dev/null || lang='en'
+load_language
+
+################################################################################
+
+help () {
+	echo
+	echo "USE:\t\t${0##*/} action files"
+	echo
+	echo "action:\t\tleft, right, overturn, flip"
+	echo "files:\t\tfile1 file2 ..."
+	echo
+	echo "example:\t${0##*/} repair /home/user/file1.pdf /home/user/file2.pdf"
+	echo
+	exit 0
+}
+
+## Rotate to left one or many documents.
+left () {
+	for input in "${@}"; do
+		work_dir="${input%/*}" && [ ! -d "${work_dir}" ] && work_dir="$(pwd)"
+		file_name="${input##*/}"
+		base_file_name="${file_name%.*}"
+
+		## Reload language strings with current variables
+		load_language
+
+		suffix="${msg_rotate_left_save_file_name}"
+
+		[ ! -f "${work_dir}/${file_name}" ] && shift && "${kdialog_bin}" --title "${msg_rotate_left_finish_title}" --passivepopup "${msg_common_file_not_found}" 5 && continue
+
+		msg=$("${pdfjam_bin}" --angle '90' --fitpaper 'true' --rotateoversize 'true' --suffix "${suffix}" -- "${input}" 2>&1) && \
+		"${kdialog_bin}" --icon object-rotate-left --title "${msg_rotate_left_finish_title}" --passivepopup "${msg_common_finish_ok}" 5 || \
+		{ "${kdialog_bin}" --title "${msg_rotate_left_finish_title}" --detailederror "${msg_common_finish_error}" "${msg}"; exit 2; }
+	done
+}
+
+## Rotate to right one or many documents.
+right () {
+	for input in "${@}"; do
+		work_dir="${input%/*}" && [ ! -d "${work_dir}" ] && work_dir="$(pwd)"
+		file_name="${input##*/}"
+		base_file_name="${file_name%.*}"
+
+		## Reload language strings with current variables
+		load_language
+
+		suffix="${msg_rotate_right_save_file_name}"
+
+		[ ! -f "${work_dir}/${file_name}" ] && shift && "${kdialog_bin}" --title "${msg_rotate_right_finish_title}" --passivepopup "${msg_common_file_not_found}" 5 && continue
+
+		msg=$("${pdfjam_bin}" --angle '270' --fitpaper 'true' --rotateoversize 'true' --suffix "${suffix}" "${input}" 2>&1) && \
+		"${kdialog_bin}" --icon object-rotate-right --title "${msg_rotate_right_finish_title}" --passivepopup "${msg_common_finish_ok}" 5 || \
+		{ "${kdialog_bin}" --title "${msg_rotate_right_finish_title}" --detailederror "${msg_common_finish_error}" "${msg}"; exit 2; }
+	done
+}
+
+## Overturn one or many documents.
+overturn () {
+	for input in "${@}"; do
+		work_dir="${input%/*}" && [ ! -d "${work_dir}" ] && work_dir="$(pwd)"
+		file_name="${input##*/}"
+		base_file_name="${file_name%.*}"
+
+		## Reload language strings with current variables
+		load_language
+
+		suffix="${msg_rotate_overturn_save_file_name}"
+
+		[ ! -f "${work_dir}/${file_name}" ] && shift && "${kdialog_bin}" --title "${msg_rotate_overturn_finish_title}" --passivepopup "${msg_common_file_not_found}" 5 && continue
+
+		msg=$("${pdfjam_bin}" --angle '180' --fitpaper 'true' --rotateoversize 'true' --suffix "${suffix}" "${input}" 2>&1) && \
+		"${kdialog_bin}" --icon go-down --title "${msg_rotate_overturn_finish_title}" --passivepopup "${msg_common_finish_ok}" 5 || \
+		{ "${kdialog_bin}" --title "${msg_rotate_overturn_finish_title}" --detailederror "${msg_common_finish_error}" "${msg}"; exit 2; }
+	done
+}
+
+## Flip one or many documents.
+flip () {
+	for input in "${@}"; do
+		work_dir="${input%/*}" && [ ! -d "${work_dir}" ] && work_dir="$(pwd)"
+		file_name="${input##*/}"
+		base_file_name="${file_name%.*}"
+
+		## Reload language strings with current variables
+		load_language
+
+		suffix="${msg_rotate_flip_save_file_name}"
+
+		[ ! -f "${work_dir}/${file_name}" ] && shift && "${kdialog_bin}" --title "${msg_rotate_flip_finish_title}" --passivepopup "${msg_common_file_not_found}" 5 && continue
+
+		msg=$("${pdfjam_bin}" --reflect 'true' --fitpaper 'true' --suffix "${suffix}" "${input}" 2>&1) && \
+		"${kdialog_bin}" --icon object-flip-horizontal --title "${msg_rotate_flip_finish_title}" --passivepopup "${msg_common_finish_ok}" 5 || \
+		{ "${kdialog_bin}" --title "${msg_rotate_flip_finish_title}" --detailederror "${msg_common_finish_error}" "${msg}"; exit 2; }
+	done
+}
+
+################################################################################
+
+[ "${1}" = "-h" ] || [ "${1}" = "--help" ] || [ ${#} -lt 2 ] && help
+
+kdialog_bin=$(which kdialog)
+[ -z "${kdialog_bin}" ] && echo "kdialog not found!" && exit 1
+
+pdfinfo_bin=$(which pdfinfo)
+[ -z "${pdfinfo_bin}" ] && "${kdialog_bin}" --title "${msg_common_software_not_found_title}" --error "${msg_common_pdfinfo_not_found_text}" && exit 2
+
+pdfjam_bin=$(which pdfjam)
+[ -z "${pdfjam_bin}" ] && "${kdialog_bin}" --title "${msg_common_software_not_found_title}" --error "${msg_common_pdfjam_not_found_text}" && exit 2
+
+action="${1}"
+shift
+
+type "${action}" >/dev/null 2>&1 || \
+	{ "${kdialog_bin}" --title "${msg_common_software_not_found_title}" --error "${msg_common_action_not_found_text}" && exit 3; }
+
+"${action}" "${@}"
+
+exit 0

@@ -1,0 +1,104 @@
+#
+# 	Part of kde-service-menu-pdf Version 2.3
+# 	Copyright (C) 2007-2019 Giuseppe Benigno <giuseppe.benigno(at)gmail.com>
+#
+# 	This program is free software: you can redistribute it and/or modify
+# 	it under the terms of the GNU General Public License as published by
+# 	the Free Software Foundation, either version 3 of the License, or
+# 	(at your option) any later version.
+#
+# 	This program is distributed in the hope that it will be useful,
+# 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+# 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# 	GNU General Public License for more details.
+#
+# 	You should have received a copy of the GNU General Public License
+# 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+[Desktop Entry]
+Type=Service
+ServiceTypes=KonqPopupMenu/Plugin
+MimeType=application/pdf;
+Actions=imgallpages;imgselectpages;_SEPARATOR_;txtallpages;txtselectpages;_SEPARATOR_;list_embedded_files;detach_embedded_files;
+Name=PDF Extract service menu
+X-KDE-Submenu=Extract
+X-KDE-Submenu[de]=Herausziehen
+X-KDE-Submenu[es]=Extraer
+X-KDE-Submenu[fr]=Extraire
+X-KDE-Submenu[gl]=Extrair
+X-KDE-Submenu[it]=Estrai
+X-KDE-Submenu[ru]=Извлечь
+
+
+#----------------------------------------
+
+[Desktop Action imgallpages]
+Icon=image
+Name=images (from all pages)
+Name[de]=Bilder (von allen Seiten)
+Name[es]=Imágenes (todas las páginas)
+Name[fr]=Images (de toutes les pages)
+Name[gl]=Images (de todas as páginas)
+Name[it]=Immagini (da tutte le pagine)
+Name[ru]=изобвражения (Из всех страниц)
+Exec=pdf-tools-images-kdialog allpages %F
+
+[Desktop Action imgselectpages]
+Icon=image
+Name=images (from selected page range)
+Name[de]=Bilder (von bestimmten Seiten)
+Name[es]=Imágenes (del rango de páginas seleccionado)
+Name[fr]=Images (d'une sélection de pages)
+Name[gl]=Images (dum rango de páginas selecionado)
+Name[it]=Immagini (dalle pagine selezionate)
+Name[ru]=изобвражения (Из диапазона выбранных страниц)
+Exec=pdf-tools-images-kdialog selectpages %F
+
+#----------------------------------------
+
+[Desktop Action txtallpages]
+Icon=text-plain
+Name=Text (from all pages)
+Name[de]=Text (alle Seiten)
+Name[es]=Texto (todas las páginas)
+Name[fr]=Texte (toutes les pages)
+Name[gl]=Texto (todas as páginas)
+Name[it]=Testo (tutte le pagine)
+Name[ru]=текст (bсе страницы)
+Exec=pdf-tools-totext-kdialog allpages %F
+
+[Desktop Action txtselectpages]
+Icon=text-plain
+Name=Text (from selected page range)
+Name[de]=Text (von bestimmten Seiten)
+Name[es]=Texto (del rango de páginas seleccionado)
+Name[fr]=Texte (d'une sélection de pages)
+Name[gl]=Texto (dum rango de páginas selecionado)
+Name[it]=Testo (dalle pagine selezionate)
+Name[ru]=текст (Из диапазона выбранных страниц)
+Exec=pdf-tools-totext-kdialog selectpages %F
+
+#---------------------------------------------------------------------------------------------------------------------------------------------------
+
+[Desktop Action list_embedded_files]
+Icon=mail-forward-attachment
+Name=List all embedded files
+Name[de]=Alle eingebetteten Dateien auflisten
+Name[es]=Listar todos los archivos incrustados
+Name[fr]=Lister tous les fichiers incorporés
+Name[gl]=Listar todos os arquivos incorporados
+Name[it]=Elenco degli allegati
+Name[ru]=Lister tous les fichiers incorporés
+Exec=pdf-tools-detach-kdialog list %F
+
+[Desktop Action detach_embedded_files]
+Icon=mail-forward-attachment
+Name=Extract all attached files
+Name[de]=Alle angehängten Dateien entpacken
+Name[es]=Extraer todos los ficheros adjuntados
+Name[fr]=Extraire toutes les pièces jointes
+Name[gl]=Extrair todos os ficheiros anexados
+Name[it]=Estrai gli allegati
+Name[ru]=Извлечь все вложенные файлы
+Exec=pdf-tools-detach-kdialog detach %F

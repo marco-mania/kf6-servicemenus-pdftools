@@ -1,0 +1,161 @@
+#!/usr/bin/bash
+#
+# 	Part of kde-service-menu-pdf Version 2.3
+# 	Copyright (C) 2007-2019 Giuseppe Benigno <giuseppe.benigno(at)gmail.com>
+#
+# 	This program is free software: you can redistribute it and/or modify
+# 	it under the terms of the GNU General Public License as published by
+# 	the Free Software Foundation, either version 3 of the License, or
+# 	(at your option) any later version.
+#
+# 	This program is distributed in the hope that it will be useful,
+# 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+# 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# 	GNU General Public License for more details.
+#
+# 	You should have received a copy of the GNU General Public License
+# 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+new_line="
+"
+
+#### languages strings messages #################
+# Syntax for strings name is: msg_[$action]_$window_[$section]
+# For languages as sr@Latn use srLatn
+
+load_language_de () {
+	msg_common_software_not_found_title="Komponente wurde nicht gefunden"
+	msg_common_lpstat_not_found_text="Die lpstat Software wurde nicht gefunden! Bitte installieren Sie CUPS."
+	msg_common_lpr_not_found_text="Die lpr Software wurde nicht gefunden! Bitte installieren Sie CUPS."
+	msg_common_finish_ok="Fertig."
+	msg_common_finish_error="Ein Fehler ist aufgetreten."
+	msg_common_file_not_found="Datei nicht gefunden."
+
+	msg_print_file_missing="Bitte mindestens eine Datei auswählen."
+	msg_print_choose_printer="Wählen Sie Drucker"
+	msg_print_finish_title="Dateien gedruckt\"${file_name}\""
+}
+
+load_language_en () {
+	msg_common_software_not_found_title="Component not found"
+	msg_common_lpstat_not_found_text="Software lpstat not found! Please, install CUPS."
+	msg_common_lpr_not_found_text="Software lpr not found! Please, install CUPS."
+	msg_common_finish_ok="Done."
+	msg_common_finish_error="An error has occurred."
+	msg_common_file_not_found="File not found."
+
+	msg_print_file_missing="Please select at least one file."
+	msg_print_choose_printer="Choose Printer:"
+	msg_print_finish_title="Printed documents \"${file_name}\""
+}
+
+load_language_fr () {
+	msg_common_software_not_found_title="Composant non trouvé"
+	msg_common_lpstat_not_found_text="Logiciel lpstat non trouvé! S'il vous plaît, installez CUPS."
+	msg_common_lpr_not_found_text="Logiciel lpr non trouvé! S'il vous plaît, installez CUPS."
+	msg_common_finish_ok="Terminée."
+	msg_common_finish_error="Une erreur est survenue."
+	msg_common_file_not_found="Fichier non trouvé."
+
+	msg_print_file_missing="Selectionnez au moins un fichier !"
+	msg_print_choose_printer="Choisissez l'imprimante:"
+	msg_print_finish_title="Impression des documents \"${file_name}\""
+}
+
+load_language_it () {
+	msg_common_software_not_found_title="Componente non trovato"
+	msg_common_lpstat_not_found_text="Il software lpstat non è stato trovato! Per favore, installa CUPS."
+	msg_common_lpr_not_found_text="Il software lpr non è stato trovato! Per favore, installa CUPS."
+	msg_common_finish_ok="Finito."
+	msg_common_finish_error="Si è verificato un errore."
+	msg_common_file_not_found="File non trovato."
+
+	msg_print_file_missing="Per favore, seleziona almeno un file."
+	msg_print_choose_printer="Seleziona la stampante:"
+	msg_print_finish_title="Documenti mandati in stampa: \"${file_name}\""
+}
+
+load_language_ru () {
+	msg_common_software_not_found_title="Компонент не найден"
+	msg_common_lpstat_not_found_text="Программное обеспечение lpstat не найдено! Установите CUPS."
+	msg_common_lpr_not_found_text="Программное обеспечение lpr не найдено! Установите CUPS."
+	msg_common_finish_ok="Готово."
+	msg_common_finish_error="Произошла ошибка."
+	msg_common_file_not_found="Файл не найден."
+
+	msg_print_file_missing="Пожалуйста, выберите хотя бы один файл."
+	msg_print_choose_printer="Выберите принтер:"
+	msg_print_finish_title="Печатаемые документы \"${file_name}\""
+}
+
+load_language () {
+	## Load localized strings AFTER english strings
+	## - if localized strings not found use english for default
+	## - if localized strings are incomplete use english only fot missing strings :-)
+	load_language_en && [ "${lang}" != "en" ] && load_language_${lang}
+}
+
+lang=${LANGUAGE%%:*}
+type load_language_${lang} > /dev/null || lang='en'
+load_language
+
+################################################################################
+
+help () {
+	echo
+	echo "USE:\t\t${0##*/} files"
+	echo
+	echo "files:\t\tfile1 file2 ..."
+	echo
+	echo "example:\t${0##*/} /home/user/file1.pdf /home/user/file2.pdf"
+	echo
+	exit 0
+}
+
+print () {
+	# build printer list
+	printer_default=$("${lpstat_bin}" -p -d | grep default | cut -f2 -d':')
+	printers=$("${lpstat_bin}" -a | cut -f1 -d' ')
+	pp=''
+	for printer in $printers; do
+		pp=$(echo "$pp $printer $printer")
+		[ x"${printer}" = x"${printer_default}" ] && pp=$(echo $pp on) || pp=$(echo $pp off)
+	done
+
+	printer=$("${kdialog_bin}" --radiolist "${msg_print_choose_printer}" $pp) || exit 0
+	echo $printer
+
+	while [ $# -ne 0 ]; do
+		work_dir="${1%/*}"; [ ! -d "${work_dir}" ] && work_dir="$(pwd)"
+		file_name="${1##*/}"
+		base_file_name="${file_name%.*}"
+
+		## Reload language strings with current variables
+		load_language
+
+		[ ! -f "${work_dir}/${file_name}" ] && shift && "${kdialog_bin}" --title "${msg_print_finish_title}" --passivepopup "${msg_common_file_not_found}" 5 && continue
+
+		msg=$("${lpr_bin}" -P ${printer} "${work_dir}/${file_name}" 2>&1) && \
+		"${kdialog_bin}" --icon printer --title "${msg_print_finish_title} " --passivepopup "${msg_common_finish_ok}" 5 || \
+		{ "${kdialog_bin}" --title "${msg_print_finish_title} " --detailederror "${msg_common_finish_error}" "${msg}"; exit 2; }
+
+		shift
+	done
+}
+
+################################################################################
+
+[ "${1}" = "-h" ] || [ "${1}" = "--help" ] && help
+[ ${#} -lt 1 ] && "${kdialog_bin}" -sorry "${msg_print_file_missing}"
+
+kdialog_bin=$(which kdialog)
+[ -z "${kdialog_bin}" ] && echo "kdialog not found!" && exit 1
+
+lpstat_bin=$(which lpstat)
+[ -z "${lpstat_bin}" ] && "${kdialog_bin}" --title "${msg_common_software_not_found_title}" --error "${msg_common_lpstat_not_found_text}" && exit 2
+
+lpr_bin=$(which lpr)
+[ -z "${lpr_bin}" ] && "${kdialog_bin}" --title "${msg_common_software_not_found_title}" --error "${msg_common_lpr_not_found_text}" && exit 2
+
+print "${@}" && exit 0

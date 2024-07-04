@@ -1,0 +1,412 @@
+#!/usr/bin/bash
+#
+# 	Part of kde-service-menu-pdf Version 2.3
+# 	Copyright (C) 2007-2019 Giuseppe Benigno <giuseppe.benigno(at)gmail.com>
+#
+# 	This program is free software: you can redistribute it and/or modify
+# 	it under the terms of the GNU General Public License as published by
+# 	the Free Software Foundation, either version 3 of the License, or
+# 	(at your option) any later version.
+#
+# 	This program is distributed in the hope that it will be useful,
+# 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+# 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# 	GNU General Public License for more details.
+#
+# 	You should have received a copy of the GNU General Public License
+# 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+new_line="
+"
+
+#### languages strings messages #################
+# Syntax for strings name is: msg_[$action]_$window_[$section]
+# For languages as sr@Latn use srLatn
+
+load_language_de () {
+	msg_common_software_not_found_title="Komponente wurde nicht gefunden"
+	msg_common_gs_not_found_text="Die gs Software wurde nicht gefunden! Bitte installieren Sie Ghostscript."
+	msg_common_create_dir_error="Kann Zielverzeichnis für die Bilddateien nicht erstellen!"
+	msg_common_action_not_found_text="Die angeforderte Aktion ist nicht implementiert."
+	msg_common_finish_ok="Fertig."
+	msg_common_finish_error="Ein Fehler ist aufgetreten."
+	msg_common_file_not_found="Datei nicht gefunden."
+	msg_common_save_file_title="Dokument speichern"
+
+	msg_optimize_pdfsettings_title="Auflösung"
+	msg_optimize_pdfsettings_text="Auflösung auswählen"
+	msg_optimize_initial_output_file_name="${work_dir}/${base_file_name} (optimiert).pdf"
+	msg_optimize_finish_title="Optimierung von \"${file_name}\""
+
+	msg_pdfa1b_finish_title="Umwandlung nach PDF/A-1b"
+	msg_pdfa2b_finish_title="Umwandlung nach PDF/A-2b"
+
+	msg_png_select_output_dir_title="Wählen Sie einen leeren Zielordner für PNG-Dateien"
+	msg_png_dest_dir_png16m="${work_dir}/${base_file_name} (alle farben png)"
+	msg_png_dest_dir_png256="${work_dir}/${base_file_name} (256 farben png)"
+	msg_png_dest_dir_png16="${work_dir}/${base_file_name} (16 farben png)"
+	msg_png_dest_dir_pnggray="${work_dir}/${base_file_name} (grau png)"
+	msg_png_dest_dir_pngmono="${work_dir}/${base_file_name} (mono png)"
+	msg_png_dest_dir_pngalpha="${work_dir}/${base_file_name} (transparentes png)"
+	msg_png_dpi_title="DPI für eingeben\"${base_file_name}\""
+	msg_png_dpi_text="Bitte geben Sie die DPI Auflösung für die Bilder ein. Normale Bildschirme haben 72x72 DPI."
+	msg_png_finish_title="Umwandlung des Dokuments \"${file_name}\""
+
+	msg_jpg_select_output_dir_title="Wählen Sie einen leeren Zielordner für JPG-Dateien"
+	msg_jpg_dest_dir_jpeggray="${work_dir}/${base_file_name} (grau jpeg)"
+	msg_jpg_dest_dir_jpeg="${work_dir}/${base_file_name} (farbe jpeg)"
+	msg_jpg_dpi_title="DPI für eingeben \"${base_file_name}\""
+	msg_jpg_dpi_text="Bitte geben Sie die DPI Auflösung für die Bilder ein. Normale Bildschirme haben 72x72 DPI."
+	msg_jpg_finish_title="Umwandlung des Dokuments \"${file_name}\""
+
+	msg_tiff_select_output_dir_title="Wählen Sie einen leeren Zielordner für TIFF-Dateien"
+	msg_tiff_dest_dir_tiffg3="${work_dir}/${base_file_name} (G3 fax encoding)"
+	msg_tiff_dest_dir_tiffg32d="${work_dir}/${base_file_name} (2-D G3 fax encoding)"
+	msg_tiff_dest_dir_tiffg4="${work_dir}/${base_file_name} (G4 fax encoding)"
+	msg_tiff_finish_title="Umwandlung des Dokuments \"${file_name}\""
+}
+
+load_language_en () {
+	msg_common_software_not_found_title="Component not found"
+	msg_common_gs_not_found_text="Software gs not found! Please, install Ghostscript."
+	msg_common_create_dir_error="Unable to create the images destination directory!"
+	msg_common_action_not_found_text="The requested action is not implemented."
+	msg_common_finish_ok="Done."
+	msg_common_finish_error="An error has occurred."
+	msg_common_file_not_found="File not found."
+	msg_common_save_file_title="Save document"
+
+	msg_optimize_pdfsettings_title="Document resolution"
+	msg_optimize_pdfsettings_text="Choose resolution"
+	msg_optimize_initial_output_file_name="${work_dir}/${base_file_name} (optimized).pdf"
+	msg_optimize_finish_title="Optimization of document \"${file_name}\""
+
+	msg_pdfa1b_finish_title="Converting to PDF/A-1b"
+	msg_pdfa2b_finish_title="Converting to PDF/A-2b"
+
+	msg_png_select_output_dir_title="Select empty destination folder for png files"
+	msg_png_dest_dir_png16m="${work_dir}/${base_file_name} (full color png)"
+	msg_png_dest_dir_png256="${work_dir}/${base_file_name} (256 colors png)"
+	msg_png_dest_dir_png16="${work_dir}/${base_file_name} (16 color png)"
+	msg_png_dest_dir_pnggray="${work_dir}/${base_file_name} (gray png)"
+	msg_png_dest_dir_pngmono="${work_dir}/${base_file_name} (mono png)"
+	msg_png_dest_dir_pngalpha="${work_dir}/${base_file_name} (transparency png)"
+	msg_png_dpi_title="Input DPI for \"${base_file_name}\""
+	msg_png_dpi_text="Please write DPI resolution for images. Normal screen have 72x72 DPI."
+	msg_png_finish_title="Conversion of document \"${file_name}\""
+
+	msg_jpg_select_output_dir_title="Select empty destination folder for jpeg files"
+	msg_jpg_dest_dir_jpeggray="${work_dir}/${base_file_name} (gray jpeg)"
+	msg_jpg_dest_dir_jpeg="${work_dir}/${base_file_name} (color jpeg)"
+	msg_jpg_dpi_title="Input DPI for \"${base_file_name}\""
+	msg_jpg_dpi_text="Please write DPI resolution for images. Normal screen have 72x72 DPI."
+	msg_jpg_finish_title="Conversion of document \"${file_name}\""
+
+	msg_tiff_select_output_dir_title="Select empty destination folder for tiff files"
+	msg_tiff_dest_dir_tiffg3="${work_dir}/${base_file_name} (G3 fax encoding)"
+	msg_tiff_dest_dir_tiffg32d="${work_dir}/${base_file_name} (2-D G3 fax encoding)"
+	msg_tiff_dest_dir_tiffg4="${work_dir}/${base_file_name} (G4 fax encoding)"
+	msg_tiff_finish_title="Conversion of document \"${file_name}\""
+}
+
+load_language_it () {
+	msg_common_software_not_found_title="Componente non trovato"
+	msg_common_gs_not_found_text="Il software gs non è stato trovato! Per favore installa Ghostscript."
+	msg_common_create_dir_error="Non è possibile creare la directory di destinazione per le immagini!"
+	msg_common_action_not_found_text="L'azione richiesta non è implementata."
+	msg_common_finish_ok="Completata."
+	msg_common_finish_error="Si è verificato un errore."
+	msg_common_file_not_found="File non trovato."
+	msg_common_save_file_title="Salva documento"
+
+	msg_optimize_pdfsettings_title="Risoluzione del documento"
+	msg_optimize_pdfsettings_text="Scegli la risoluzione desiderata"
+	msg_optimize_initial_output_file_name="${work_dir}/${base_file_name} (ottimizzato).pdf"
+	msg_optimize_finish_title="Ottimizzazione del documento \"${file_name}\""
+
+	msg_pdfa1b_finish_title="Conversione in PDF/A-1b"
+	msg_pdfa2b_finish_title="Conversione in PDF/A-2b"
+
+	msg_png_select_output_dir_title="Seleziona una directory di destinazione vuota per i file png"
+	msg_png_dest_dir_png16m="${work_dir}/${base_file_name} (png con tutti i colori)"
+	msg_png_dest_dir_png256="${work_dir}/${base_file_name} (png con 256 colori)"
+	msg_png_dest_dir_png16="${work_dir}/${base_file_name} (png con 16 colori)"
+	msg_png_dest_dir_pnggray="${work_dir}/${base_file_name} (png toni di grigio)"
+	msg_png_dest_dir_pngmono="${work_dir}/${base_file_name} (png bianco e nero)"
+	msg_png_dest_dir_pngalpha="${work_dir}/${base_file_name} (png con trasparenza)"
+	msg_png_dpi_title="Inserimento DPI per \"${base_file_name}\""
+	msg_png_dpi_text="Per favore scrivi la risoluzione in DPI per le immagini. Gli schermi normali hanno una risoluzione di 72x72 DPI."
+	msg_png_finish_title="Conversione del documento \"${file_name}\""
+
+	msg_jpg_select_output_dir_title="Seleziona una directory di destinazione vuota per i file jpg"
+	msg_jpg_dest_dir_jpeggray="${work_dir}/${base_file_name} (jpeg in toni di grigio)"
+	msg_jpg_dest_dir_jpeg="${work_dir}/${base_file_name} (jpeg a colori)"
+	msg_jpg_dpi_title="Inserimento DPI per \"${base_file_name}\""
+	msg_jpg_dpi_text="Per favore scrivi la risoluzione in DPI per le immagini. Gli schermi normali hanno una risoluzione di 72x72 DPI."
+	msg_jpg_finish_title="Conversione del documento \"${file_name}\""
+
+	msg_tiff_select_output_dir_title="Seleziona una directory di destinazione vuota per i file tiff"
+	msg_tiff_dest_dir_tiffg3="${work_dir}/${base_file_name} (codifica fax G3)"
+	msg_tiff_dest_dir_tiffg32d="${work_dir}/${base_file_name} (codifica fax 2-D G3)"
+	msg_tiff_dest_dir_tiffg4="${work_dir}/${base_file_name} (codifica fax G4)"
+	msg_tiff_finish_title="Conversione del documento \"${file_name}\""
+}
+
+load_language_ru () {
+	msg_common_software_not_found_title="Компонент не найден"
+	msg_common_gs_not_found_text="Программное обеспечение gs не найдено! Установите Ghostscript."
+	msg_common_create_dir_error="Невозможно создать каталог назначения!"
+	msg_common_action_not_found_text="Запрошенное действие не выполнено."
+	msg_common_finish_ok="Готово."
+	msg_common_finish_error="Произошла ошибка."
+	msg_common_file_not_found="Файл не найден."
+	msg_common_save_file_title="Сохранить документ"
+
+	msg_optimize_pdfsettings_title="Разрешение документа"
+	msg_optimize_pdfsettings_text="Выбрать разрешение"
+	msg_optimize_initial_output_file_name="${work_dir}/${base_file_name} (оптимизированный).pdf"
+	msg_optimize_finish_title="Оптимизация документа \"${file_name}\""
+
+	msg_pdfa1b_finish_title="Преобразование в PDF/A-1b"
+	msg_pdfa2b_finish_title="Преобразование в PDF/A-2b"
+
+	msg_png_select_output_dir_title="Выберите пустую папку назначения для png-файлов"
+	msg_png_dest_dir_png16m="${work_dir}/${base_file_name} (Полноцветный png)"
+	msg_png_dest_dir_png256="${work_dir}/${base_file_name} (256 цветов png)"
+	msg_png_dest_dir_png16="${work_dir}/${base_file_name} (16 цветов png)"
+	msg_png_dest_dir_pnggray="${work_dir}/${base_file_name} (Серый png)"
+	msg_png_dest_dir_pngmono="${work_dir}/${base_file_name} (Моно png)"
+	msg_png_dest_dir_pngalpha="${work_dir}/${base_file_name} (Прозрачный png)"
+	msg_png_dpi_title="Икпорт DPI для \"${base_file_name}\""
+	msg_png_dpi_text="Пожалуйста, напишите DPI разрешение для изображений. Нормальный экран 72x72 DPI."
+	msg_png_finish_title="Преобразование документа \"${file_name}\""
+
+	msg_jpg_select_output_dir_title="Выберите пустую папку назначения для jpg-файлов"
+	msg_jpg_dest_dir_jpeggray="${work_dir}/${base_file_name} (Серый jpeg)"
+	msg_jpg_dest_dir_jpeg="${work_dir}/${base_file_name} (Цветной jpeg)"
+	msg_jpg_dpi_title="Икпорт DPI для \"${base_file_name}\""
+	msg_jpg_dpi_text="Пожалуйста, напишите DPI разрешение для изображений. Нормальный экран 72x72 DPI."
+	msg_jpg_finish_title="Преобразование документа \"${file_name}\""
+
+	msg_tiff_select_output_dir_title="Выберите пустую папку назначения для tiff-файлов"
+	msg_tiff_dest_dir_tiffg3="${work_dir}/${base_file_name} (Кодирование факс G3)"
+	msg_tiff_dest_dir_tiffg32d="${work_dir}/${base_file_name} (Кодирование факс 2-D G3)"
+	msg_tiff_dest_dir_tiffg4="${work_dir}/${base_file_name} (Кодирование факс G4)"
+	msg_tiff_finish_title="Преобразование документа \"${file_name}\""
+}
+
+load_language () {
+	## Load localized strings AFTER english strings
+	## - if localized strings not found use english for default
+	## - if localized strings are incomplete use english only fot missing strings :-)
+	load_language_en && [ "${lang}" != "en" ] && load_language_${lang}
+}
+
+lang=${LANGUAGE%%:*}
+type load_language_${lang} > /dev/null || lang='en'
+load_language
+
+################################################################################
+
+help () {
+	echo
+	echo "USE:\t\t${0##*/} optimize|pdf1a files"
+	echo "USE:\t\t${0##*/} image-type encoding-type files"
+	echo
+	echo "image-type:\t\tpng, jpeg, tiff"
+	echo "png-encoding-type:\tpng16m, png256, png16, pnggray, pngmono"
+	echo "jpeg-encoding-type:\tjpeg, jpeggray"
+	echo "tiff-encoding-type:\ttiffg3, tiffg32d, tiffg4"
+	echo "files:\t\tfile1 file2 ..."
+	echo
+	echo "example:\t${0##*/} optimize /home/user/file1.pdf /home/user/file2.pdf"
+	echo "example:\t${0##*/} png png16m /home/user/file1.pdf /home/user/file2.pdf"
+	echo
+	exit 0
+}
+
+optimize () {
+	pdfsettings=$("${kdialog_bin}" --title "${msg_optimize_pdfsettings_title}" --combobox "${msg_optimize_pdfsettings_text}" screen default ebook printer prepress --default "default") || exit 0
+	[ -z "${pdfsettings}" ] && pdfsettings='default'
+
+	while [ $# -ne 0 ]; do
+		work_dir="${1%/*}"; [ ! -d "${work_dir}" ] && work_dir="$(pwd)"
+		file_name="${1##*/}"
+		base_file_name="${file_name%.*}"
+
+		## Reload language strings with current variables
+		load_language
+
+		output_file_name="${msg_optimize_initial_output_file_name}"
+		if [ -e "${output_file_name}" ]; then
+			output_file_name=$("${kdialog_bin}" --title "${msg_common_save_file_title}" --getsavefilename "${output_file_name}" application/pdf) || exit 0
+		fi
+
+		[ ! -f "${work_dir}/${file_name}" ] && shift && "${kdialog_bin}" --title "${msg_finish_title}" --passivepopup "${msg_common_file_not_found}" 5 && continue
+
+		msg=$("${gs_bin}" -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -dPDFSETTINGS="/${pdfsettings}" -sOutputFile="${output_file_name}" "${1}" 2>&1) && \
+		"${kdialog_bin}" --icon viewpdf --title "${msg_optimize_finish_title}" --passivepopup "${msg_common_finish_ok}" 5 || \
+		{ "${kdialog_bin}" --title "${msg_optimize_finish_title}" --detailederror "${msg_common_finish_error}" "${msg}"; exit 2; }
+
+		shift
+	done
+}
+
+pdfa1b () {
+	while [ $# -ne 0 ]; do
+		work_dir="${1%/*}"; [ ! -d "${work_dir}" ] && work_dir="$(pwd)"
+		file_name="${1##*/}"
+		base_file_name="${file_name%.*}"
+
+		## Reload language strings with current variables
+		load_language
+
+		output_file_name="${base_file_name} PDFA1b.pdf"
+		if [ -e "${output_file_name}" ]; then
+			output_file_name=$("${kdialog_bin}" --title "${msg_common_save_file_title}" --getsavefilename "${output_file_name}" application/pdf) || exit 0
+		fi
+
+		[ ! -f "${work_dir}/${file_name}" ] && shift && "${kdialog_bin}" --title "${msg_finish_title}" --passivepopup "${msg_common_file_not_found}" 5 && continue
+
+		msg=$("${gs_bin}" -dPDFA=1 -dBATCH -dNOPAUSE -dNOOUTERSAVE -sColorConversionStrategy=UseDeviceIndependentColor -sProcessColorModel=DeviceCMYK -sDEVICE=pdfwrite -sPDFACompatibilityPolicy=1 -sOutputFile="${output_file_name}" "${work_dir}/${file_name}" 2>&1) && \
+		"${kdialog_bin}" --icon viewpdf --title "${msg_pdfa1b_finish_title}" --passivepopup "${msg_common_finish_ok}" 5 || \
+		{ "${kdialog_bin}" --title "${msg_pdfa1b_finish_title}" --detailederror "${msg_common_finish_error}" "${msg}"; exit 2; }
+
+		shift
+	done
+}
+
+pdfa2b () {
+	while [ $# -ne 0 ]; do
+		work_dir="${1%/*}"; [ ! -d "${work_dir}" ] && work_dir="$(pwd)"
+		file_name="${1##*/}"
+		base_file_name="${file_name%.*}"
+
+		## Reload language strings with current variables
+		load_language
+
+		output_file_name="${base_file_name} PDFA2b.pdf"
+		if [ -e "${output_file_name}" ]; then
+			output_file_name=$("${kdialog_bin}" --title "${msg_common_save_file_title}" --getsavefilename "${output_file_name}" application/pdf) || exit 0
+		fi
+
+		[ ! -f "${work_dir}/${file_name}" ] && shift && "${kdialog_bin}" --title "${msg_finish_title}" --passivepopup "${msg_common_file_not_found}" 5 && continue
+
+		msg=$("${gs_bin}" -dPDFA=2 -dBATCH -dNOPAUSE -dNOOUTERSAVE -sColorConversionStrategy=UseDeviceIndependentColor -sProcessColorModel=DeviceCMYK -sDEVICE=pdfwrite -sPDFACompatibilityPolicy=1 -sOutputFile="${output_file_name}" "${work_dir}/${file_name}" 2>&1) && \
+		"${kdialog_bin}" --icon viewpdf --title "${msg_pdfa2b_finish_title}" --passivepopup "${msg_common_finish_ok}" 5 || \
+		{ "${kdialog_bin}" --title "${msg_pdfa2b_finish_title}" --detailederror "${msg_common_finish_error}" "${msg}"; exit 2; }
+
+		shift
+	done
+}
+
+#kdialog --radiolist "Colors of images" png16m "Full colors" on png256 "256 colors"off png16 "16 colors" off pnggray "Gray tones" off pngmono "mono (black and white)" pngalpha "With transparency" off
+png () {
+	encoding="${1}"
+	shift
+
+	dpi=$("${kdialog_bin}" --title "${msg_png_dpi_title}" --combobox "${msg_png_dpi_text}" 72x72 150x150 300x300 600x600 --default 150x150) || exit 0
+	[ -z "${dpi}" ] && dpi='150x150'
+
+	while [ $# -ne 0 ]; do
+		work_dir="${1%/*}"; [ ! -d "${work_dir}" ] && work_dir="$(pwd)"
+		file_name="${1##*/}"
+		base_file_name="${file_name%.*}"
+
+		## Reload language strings with current variables
+		load_language
+
+		eval output_dir=\$"msg_png_dest_dir_${encoding}"
+		if [ -d "${output_dir}" ]; then
+			output_dir=$(kdialog --title "${msg_png_select_output_dir_title}" --getexistingdirectory "${work_dir}") || exit 0
+		fi
+		mkdir -p "${output_dir}" || ( "${kdialog_bin}" --error "${msg_common_create_dir_error}" && exit 3 )
+
+		[ ! -f "${work_dir}/${file_name}" ] && shift && "${kdialog_bin}" --title "${msg_finish_title}" --passivepopup "${msg_common_file_not_found}" 5 && continue
+
+		msg=$("${gs_bin}" -dSAFER -dBATCH -dNOPAUSE -q -dTextAlphaBits=4 -dGraphicsAlphaBits=4 -sDEVICE="${encoding}" -r"${dpi}" -sOutputFile="${output_dir}/page_%0d.png" "${1}" 2>&1) && \
+		"${kdialog_bin}" --icon image-png --title "${msg_png_finish_title}" --passivepopup "${msg_common_finish_ok}" 5 || \
+		{ "${kdialog_bin}" --title "${msg_png_finish_title}" --detailederror "${msg_common_finish_error}" "${msg}"; exit 2; }
+
+		shift
+	done
+}
+
+jpeg () {
+	encoding="${1}"
+	shift
+
+	dpi=$("${kdialog_bin}" --title "${msg_jpg_dpi_title}" --combobox "${msg_jpg_dpi_text}" 72x72 150x150 300x300 600x600 --default 150x150) || exit 0
+	[ -z "${dpi}" ] && dpi='150x150'
+
+	while [ $# -ne 0 ]; do
+		work_dir="${1%/*}"; [ ! -d "${work_dir}" ] && work_dir="$(pwd)"
+		file_name="${1##*/}"
+		base_file_name="${file_name%.*}"
+
+		## Reload language strings with current variables
+		load_language
+
+		eval output_dir=\$"msg_jpg_dest_dir_${encoding}"
+		if [ -d "${output_dir}" ]; then
+			output_dir=$(kdialog --title "${msg_jpg_select_output_dir_title}" --getexistingdirectory "${work_dir}") || exit 0
+		fi
+		mkdir -p "${output_dir}" || ( "${kdialog_bin}" --error "${msg_common_create_dir_error}" && exit 3 )
+
+		[ ! -f "${work_dir}/${file_name}" ] && shift && "${kdialog_bin}" --title "${msg_finish_title}" --passivepopup "${msg_common_file_not_found}" 5 && continue
+
+		msg=$("${gs_bin}" -dSAFER -dBATCH -dNOPAUSE -q -dTextAlphaBits=4 -dGraphicsAlphaBits=4 -dMaxStripSize=8192 -sDEVICE="${encoding}" -r"${dpi}" -sOutputFile="${output_dir}/page_%0d.jpeg" "${1}" 2>&1) && \
+		"${kdialog_bin}" --icon image-jpeg --title "${msg_jpg_finish_title}" --passivepopup "${msg_common_finish_ok}" 5 || \
+		{ "${kdialog_bin}" --title "${msg_jpg_finish_title}" --detailederror "${msg_common_finish_error}" "${msg}"; exit 2; }
+
+		shift
+	done
+}
+
+tiff () {
+	encoding="${1}"
+	shift
+
+	while [ $# -ne 0 ]; do
+		## Input files must have absolute path!
+		work_dir="${1%/*}"; [ ! -d "${work_dir}" ] && work_dir="$(pwd)"
+		file_name="${1##*/}"
+		base_file_name="${file_name%.*}"
+
+		## Reload language strings with current variables
+		load_language
+
+		eval output_dir=\$"msg_tiff_dest_dir_${encoding}"
+		if [ -d "${output_dir}" ]; then
+			output_dir=$(kdialog --title "${msg_tiff_select_output_dir_title}" --getexistingdirectory "${work_dir}") || exit 0
+		fi
+		mkdir -p "${output_dir}" || ( "${kdialog_bin}" --error "${msg_common_create_dir_error}" && exit 3 )
+
+		msg=$("${gs_bin}" -dSAFER -dBATCH -dNOPAUSE -q -dTextAlphaBits=4 -dGraphicsAlphaBits=4 -dMaxStripSize=8192 -sDEVICE="${encoding}" -sOutputFile="${output_dir}/page_%0d.tiff" "${1}" 2>&1) && \
+		"${kdialog_bin}" --icon image-tiff --title "${msg_tiff_finish_title}" --passivepopup "${msg_common_finish_ok}" 5 || \
+		{ "${kdialog_bin}" --title "${msg_tiff_finish_title}" --detailederror "${msg_common_finish_error}" "${msg}"; exit 2; }
+
+		shift
+	done
+}
+
+################################################################################
+
+[ "${1}" = "-h" ] || [ "${1}" = "--help" ] || [ ${#} -lt 2 ] && help
+
+kdialog_bin=$(which kdialog)
+[ -z "${kdialog_bin}" ] && echo "kdialog not found!" && exit 1
+
+gs_bin=$(which gs)
+[ -z "${gs_bin}" ] && "${kdialog_bin}" --title "${msg_common_software_not_found_title}" --error "${msg_common_gs_not_found_text}" && exit 2
+
+action="${1}"
+shift
+
+type "${action}" >/dev/null 2>&1 || \
+	{ "${kdialog_bin}" --title "${msg_common_software_not_found_title}" --error "${msg_common_action_not_found_text}" && exit 3; }
+
+"${action}" "${@}"
+
+exit 0
