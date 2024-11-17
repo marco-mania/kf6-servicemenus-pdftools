@@ -2,7 +2,7 @@
 
 Enhance your workflow with KDE service menus specifically designed for PDF file processing.
 
-This project is a Plasma 6 port of **kde-service-menu-pdf Version 2.3**,  
+This project is an unofficial Plasma 6 port of **kde-service-menu-pdf Version 2.3**,  
 Copyright (C) 2018-2019 Giuseppe Benigno (<giuseppe.benigno@gmail.com>), GPL-3.0+.
 
 ---
