@@ -2,7 +2,7 @@
 
 Enhance your workflow with KDE service menus specifically designed for PDF file processing.
 
-This project is based on **kde-service-menu-pdf Version 2.3**,  
+This project is a Plasma 6 port of **kde-service-menu-pdf Version 2.3**,  
 Copyright (C) 2018-2019 Giuseppe Benigno (<giuseppe.benigno@gmail.com>), GPL-3.0+.
 
 ---
@@ -11,10 +11,10 @@ Copyright (C) 2018-2019 Giuseppe Benigno (<giuseppe.benigno@gmail.com>), GPL-3.0
 
 Ensure the following tools are installed:
 
-- [Ghostscript](https://www.ghostscript.com/)  
-- [Poppler](https://poppler.freedesktop.org/)  
-- [PDFtk](https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/)  
-- [TeX Live](https://tug.org/texlive/)  
+- [Ghostscript](https://www.ghostscript.com/)
+- [Poppler](https://poppler.freedesktop.org/)
+- [PDFtk](https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/)
+- [TeX Live](https://tug.org/texlive/)
 
 ---
 
