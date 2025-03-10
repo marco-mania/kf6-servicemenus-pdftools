@@ -20,12 +20,18 @@ Ensure the following tools are installed:
 
 ## Installation (Plasma 6)
 
-### Install Dependencies (Arch Linux)
+### Install Dependencies 
 
 Run the following command to install the required tools:
 
+**Arch Linux:**
 ```bash
 sudo pacman -S ghostscript texlive-bin poppler pdftk texlive-binextra texlive-latexrecommended
+```
+
+**Ubuntu Linux:**
+```bash
+sudo apt install ghostscript texlive-binaries poppler-utils pdftk-java texlive-extra-utils texlive-latex-base
 ```
 
 ### System-Wide Installation
