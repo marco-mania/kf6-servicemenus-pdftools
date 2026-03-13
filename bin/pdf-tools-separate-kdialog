@@ -175,7 +175,7 @@ range () {
 		file_name="${input##*/}"
 		base_file_name="${file_name%.*}"
 
-		pages_qty=$("${pdfinfo_bin}" "${input}" | grep "^Pages:" | sed "s/^.* //")
+		pages_qty=$("${pdfinfo_bin}" "${input}" | grep -a "^Pages:" | sed "s/^.* //")
 		len=${#pages_qty}
 		[ ${len} -eq 1 ] && len=2
 		len="%0${len}d"
@@ -215,7 +215,7 @@ odd () {
 		file_name="${input##*/}"
 		base_file_name="${file_name%.*}"
 
-		pages_qty=$("${pdfinfo_bin}" "${input}" | grep "^Pages:" | sed "s/^.* //")
+		pages_qty=$("${pdfinfo_bin}" "${input}" | grep -a "^Pages:" | sed "s/^.* //")
 		len=${#pages_qty}
 		[ ${len} -eq 1 ] && len=2
 		len="%0${len}d"
@@ -249,7 +249,7 @@ even () {
 		file_name="${input##*/}"
 		base_file_name="${file_name%.*}"
 
-		pages_qty=$("${pdfinfo_bin}" "${input}" | grep "^Pages:" | sed "s/^.* //")
+		pages_qty=$("${pdfinfo_bin}" "${input}" | grep -a "^Pages:" | sed "s/^.* //")
 		len=${#pages_qty}
 		[ ${len} -eq 1 ] && len=2
 		len="%0${len}d"
@@ -283,7 +283,7 @@ burst () {
 		file_name="${input##*/}"
 		base_file_name="${file_name%.*}"
 
-		pages_qty=$("${pdfinfo_bin}" "${input}" | grep "^Pages:" | sed "s/^.* //")
+		pages_qty=$("${pdfinfo_bin}" "${input}" | grep -a "^Pages:" | sed "s/^.* //")
 		len=${#pages_qty}
 		[ ${len} -eq 1 ] && len=2
 		len="%0${len}d"

@@ -221,7 +221,7 @@ set_nup () {
 		## Reload language strings with current variables
 		load_language
 
-	    size=$(${pdfinfo_bin} "${input}" | grep "^Page size:" | sed "s/^.* \([[:digit:]]*\) x \([[:digit:]]*\).*$/\1x\2/") || exit 3
+	    size=$(${pdfinfo_bin} "${input}" | grep -a "^Page size:" | sed "s/^.* \([[:digit:]]*\) x \([[:digit:]]*\).*$/\1x\2/") || exit 3
 		size=$(echo "${size}" | sed "s/\.[[:digit:]]*//g" | sed "s/[^[[:digit:]]*]*:[[:blank:]]*//")
 	    width=$(echo "${size}" | sed 's/\([[:digit:]]*\)[[:blank:]]*x.*/\1/g')
 	    height=$(echo "${size}" | sed 's/.*x[[:blank:]]*\([[:digit:]]*\).*/\1/g')
