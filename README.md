@@ -24,25 +24,24 @@ Ensure the following tools are installed:
 - [Ghostscript](https://www.ghostscript.com/)
 - [Poppler](https://poppler.freedesktop.org/)
 - [TeX Live](https://tug.org/texlive/) (`pdfjam`/`pdfbook2`, `pdfnup`)
-- [pdf2djvu](https://github.com/jwilk/pdf2djvu) (for the DjVu conversion actions)
 - [CUPS](https://www.cups.org/) (`lpstat`, `lpr`; for the print action)
+
+Optional (only needed for the DjVu conversion actions):
+
+- [pdf2djvu](https://github.com/jwilk/pdf2djvu)
 
 ---
 
 ## Installation (Plasma 6)
 
-### Install Dependencies 
+### Install Dependencies (Arch Linux)
 
 Run the following command to install the required tools:
 
-**Arch Linux:**
 ```bash
-sudo pacman -S kdialog ghostscript texlive-bin poppler pdf2djvu cups texlive-binextra texlive-latexrecommended
-```
-
-**Ubuntu Linux:**
-```bash
-sudo apt install ghostscript texlive-binaries poppler-utils pdftk-java texlive-extra-utils texlive-latex-base
+sudo pacman -S kdialog ghostscript texlive-bin poppler cups texlive-binextra texlive-latexrecommended
+# optional, for the DjVu conversion actions (AUR, e.g. via yay):
+yay -S pdf2djvu
 ```
 
 ### System-Wide Installation
