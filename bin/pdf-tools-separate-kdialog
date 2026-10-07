@@ -180,7 +180,7 @@ range () {
 		file_name="${input##*/}"
 		base_file_name="${file_name%.*}"
 
-		pages_qty=$("${pdfinfo_bin}" "${input}" | grep "^Pages:" | sed "s/^.* //")
+		pages_qty=$("${pdfinfo_bin}" "${input}" | grep -a "^Pages:" | sed "s/^.* //")
 		len=${#pages_qty}
 		[ ${len} -eq 1 ] && len=2
 		len="%0${len}d"
@@ -225,7 +225,7 @@ odd () {
 
 		[ ! -f "${work_dir}/${file_name}" ] && "${kdialog_bin}" --title "${msg_odd_finish_title}" --passivepopup "${msg_common_file_not_found}" 5 && continue
 
-		pages_qty=$("${pdfinfo_bin}" "${input}" | grep "^Pages:" | sed "s/^.* //")
+		pages_qty=$("${pdfinfo_bin}" "${input}" | grep -a "^Pages:" | sed "s/^.* //")
 		len=${#pages_qty}
 		[ ${len} -eq 1 ] && len=2
 		len="%0${len}d"
@@ -259,7 +259,7 @@ even () {
 
 		[ ! -f "${work_dir}/${file_name}" ] && "${kdialog_bin}" --title "${msg_even_finish_title}" --passivepopup "${msg_common_file_not_found}" 5 && continue
 
-		pages_qty=$("${pdfinfo_bin}" "${input}" | grep "^Pages:" | sed "s/^.* //")
+		pages_qty=$("${pdfinfo_bin}" "${input}" | grep -a "^Pages:" | sed "s/^.* //")
 		len=${#pages_qty}
 		[ ${len} -eq 1 ] && len=2
 		len="%0${len}d"
@@ -288,7 +288,7 @@ burst () {
 		file_name="${input##*/}"
 		base_file_name="${file_name%.*}"
 
-		pages_qty=$("${pdfinfo_bin}" "${input}" | grep "^Pages:" | sed "s/^.* //")
+		pages_qty=$("${pdfinfo_bin}" "${input}" | grep -a "^Pages:" | sed "s/^.* //")
 		len=${#pages_qty}
 		[ ${len} -eq 1 ] && len=2
 		len="%0${len}d"
