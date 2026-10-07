@@ -1,6 +1,11 @@
 #!/usr/bin/bash
 #
-# 	Part of kde-service-menu-pdf Version 2.3
+# SPDX-FileCopyrightText: 2007-2019 Giuseppe Benigno <giuseppe.benigno(at)gmail.com>
+# SPDX-FileCopyrightText: 2026 Marco Nelles <dev at maniatek dot de>
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+# 	Part of kde-service-menu-pdf Version 2.3 (unofficial KF6 port: kf6-servicemenus-pdftools)
 # 	Copyright (C) 2007-2019 Giuseppe Benigno <giuseppe.benigno(at)gmail.com>
 #
 # 	This program is free software: you can redistribute it and/or modify
@@ -243,7 +248,7 @@ optimize () {
 			output_file_name=$("${kdialog_bin}" --title "${msg_common_save_file_title}" --getsavefilename "${output_file_name}" application/pdf) || exit 0
 		fi
 
-		[ ! -f "${work_dir}/${file_name}" ] && shift && "${kdialog_bin}" --title "${msg_finish_title}" --passivepopup "${msg_common_file_not_found}" 5 && continue
+		[ ! -f "${work_dir}/${file_name}" ] && shift && "${kdialog_bin}" --title "${msg_optimize_finish_title}" --passivepopup "${msg_common_file_not_found}" 5 && continue
 
 		msg=$("${gs_bin}" -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -dPDFSETTINGS="/${pdfsettings}" -sOutputFile="${output_file_name}" "${1}" 2>&1) && \
 		"${kdialog_bin}" --icon viewpdf --title "${msg_optimize_finish_title}" --passivepopup "${msg_common_finish_ok}" 5 || \
@@ -267,7 +272,7 @@ pdfa1b () {
 			output_file_name=$("${kdialog_bin}" --title "${msg_common_save_file_title}" --getsavefilename "${output_file_name}" application/pdf) || exit 0
 		fi
 
-		[ ! -f "${work_dir}/${file_name}" ] && shift && "${kdialog_bin}" --title "${msg_finish_title}" --passivepopup "${msg_common_file_not_found}" 5 && continue
+		[ ! -f "${work_dir}/${file_name}" ] && shift && "${kdialog_bin}" --title "${msg_pdfa1b_finish_title}" --passivepopup "${msg_common_file_not_found}" 5 && continue
 
 		msg=$("${gs_bin}" -dPDFA=1 -dBATCH -dNOPAUSE -dNOOUTERSAVE -sColorConversionStrategy=UseDeviceIndependentColor -sProcessColorModel=DeviceCMYK -sDEVICE=pdfwrite -sPDFACompatibilityPolicy=1 -sOutputFile="${output_file_name}" "${work_dir}/${file_name}" 2>&1) && \
 		"${kdialog_bin}" --icon viewpdf --title "${msg_pdfa1b_finish_title}" --passivepopup "${msg_common_finish_ok}" 5 || \
@@ -291,7 +296,7 @@ pdfa2b () {
 			output_file_name=$("${kdialog_bin}" --title "${msg_common_save_file_title}" --getsavefilename "${output_file_name}" application/pdf) || exit 0
 		fi
 
-		[ ! -f "${work_dir}/${file_name}" ] && shift && "${kdialog_bin}" --title "${msg_finish_title}" --passivepopup "${msg_common_file_not_found}" 5 && continue
+		[ ! -f "${work_dir}/${file_name}" ] && shift && "${kdialog_bin}" --title "${msg_pdfa2b_finish_title}" --passivepopup "${msg_common_file_not_found}" 5 && continue
 
 		msg=$("${gs_bin}" -dPDFA=2 -dBATCH -dNOPAUSE -dNOOUTERSAVE -sColorConversionStrategy=UseDeviceIndependentColor -sProcessColorModel=DeviceCMYK -sDEVICE=pdfwrite -sPDFACompatibilityPolicy=1 -sOutputFile="${output_file_name}" "${work_dir}/${file_name}" 2>&1) && \
 		"${kdialog_bin}" --icon viewpdf --title "${msg_pdfa2b_finish_title}" --passivepopup "${msg_common_finish_ok}" 5 || \
@@ -319,11 +324,11 @@ png () {
 
 		eval output_dir=\$"msg_png_dest_dir_${encoding}"
 		if [ -d "${output_dir}" ]; then
-			output_dir=$(kdialog --title "${msg_png_select_output_dir_title}" --getexistingdirectory "${work_dir}") || exit 0
+			output_dir=$("${kdialog_bin}" --title "${msg_png_select_output_dir_title}" --getexistingdirectory "${work_dir}") || exit 0
 		fi
 		mkdir -p "${output_dir}" || ( "${kdialog_bin}" --error "${msg_common_create_dir_error}" && exit 3 )
 
-		[ ! -f "${work_dir}/${file_name}" ] && shift && "${kdialog_bin}" --title "${msg_finish_title}" --passivepopup "${msg_common_file_not_found}" 5 && continue
+		[ ! -f "${work_dir}/${file_name}" ] && shift && "${kdialog_bin}" --title "${msg_png_finish_title}" --passivepopup "${msg_common_file_not_found}" 5 && continue
 
 		msg=$("${gs_bin}" -dSAFER -dBATCH -dNOPAUSE -q -dTextAlphaBits=4 -dGraphicsAlphaBits=4 -sDEVICE="${encoding}" -r"${dpi}" -sOutputFile="${output_dir}/page_%0d.png" "${1}" 2>&1) && \
 		"${kdialog_bin}" --icon image-png --title "${msg_png_finish_title}" --passivepopup "${msg_common_finish_ok}" 5 || \
@@ -350,11 +355,11 @@ jpeg () {
 
 		eval output_dir=\$"msg_jpg_dest_dir_${encoding}"
 		if [ -d "${output_dir}" ]; then
-			output_dir=$(kdialog --title "${msg_jpg_select_output_dir_title}" --getexistingdirectory "${work_dir}") || exit 0
+			output_dir=$("${kdialog_bin}" --title "${msg_jpg_select_output_dir_title}" --getexistingdirectory "${work_dir}") || exit 0
 		fi
 		mkdir -p "${output_dir}" || ( "${kdialog_bin}" --error "${msg_common_create_dir_error}" && exit 3 )
 
-		[ ! -f "${work_dir}/${file_name}" ] && shift && "${kdialog_bin}" --title "${msg_finish_title}" --passivepopup "${msg_common_file_not_found}" 5 && continue
+		[ ! -f "${work_dir}/${file_name}" ] && shift && "${kdialog_bin}" --title "${msg_jpg_finish_title}" --passivepopup "${msg_common_file_not_found}" 5 && continue
 
 		msg=$("${gs_bin}" -dSAFER -dBATCH -dNOPAUSE -q -dTextAlphaBits=4 -dGraphicsAlphaBits=4 -dMaxStripSize=8192 -sDEVICE="${encoding}" -r"${dpi}" -sOutputFile="${output_dir}/page_%0d.jpeg" "${1}" 2>&1) && \
 		"${kdialog_bin}" --icon image-jpeg --title "${msg_jpg_finish_title}" --passivepopup "${msg_common_finish_ok}" 5 || \
@@ -379,9 +384,11 @@ tiff () {
 
 		eval output_dir=\$"msg_tiff_dest_dir_${encoding}"
 		if [ -d "${output_dir}" ]; then
-			output_dir=$(kdialog --title "${msg_tiff_select_output_dir_title}" --getexistingdirectory "${work_dir}") || exit 0
+			output_dir=$("${kdialog_bin}" --title "${msg_tiff_select_output_dir_title}" --getexistingdirectory "${work_dir}") || exit 0
 		fi
 		mkdir -p "${output_dir}" || ( "${kdialog_bin}" --error "${msg_common_create_dir_error}" && exit 3 )
+
+		[ ! -f "${work_dir}/${file_name}" ] && shift && "${kdialog_bin}" --title "${msg_tiff_finish_title}" --passivepopup "${msg_common_file_not_found}" 5 && continue
 
 		msg=$("${gs_bin}" -dSAFER -dBATCH -dNOPAUSE -q -dTextAlphaBits=4 -dGraphicsAlphaBits=4 -dMaxStripSize=8192 -sDEVICE="${encoding}" -sOutputFile="${output_dir}/page_%0d.tiff" "${1}" 2>&1) && \
 		"${kdialog_bin}" --icon image-tiff --title "${msg_tiff_finish_title}" --passivepopup "${msg_common_finish_ok}" 5 || \
@@ -395,10 +402,10 @@ tiff () {
 
 [ "${1}" = "-h" ] || [ "${1}" = "--help" ] || [ ${#} -lt 2 ] && help
 
-kdialog_bin=$(which kdialog)
+kdialog_bin=$(command -v kdialog)
 [ -z "${kdialog_bin}" ] && echo "kdialog not found!" && exit 1
 
-gs_bin=$(which gs)
+gs_bin=$(command -v gs)
 [ -z "${gs_bin}" ] && "${kdialog_bin}" --title "${msg_common_software_not_found_title}" --error "${msg_common_gs_not_found_text}" && exit 2
 
 action="${1}"

@@ -1,9 +1,18 @@
+<!--
+SPDX-FileCopyrightText: 2007-2019 Giuseppe Benigno <giuseppe.benigno(at)gmail.com>
+SPDX-FileCopyrightText: 2026 Marco Nelles <dev at maniatek dot de>
+
+SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
 # KDE Service Menus for PDF File Processing
 
 Enhance your workflow with KDE service menus specifically designed for PDF file processing.
 
 This project is an unofficial Plasma 6 port of **kde-service-menu-pdf Version 2.3**,  
-Copyright (C) 2018-2019 Giuseppe Benigno (<giuseppe.benigno@gmail.com>), GPL-3.0+.
+Copyright (C) 2018-2019 Giuseppe Benigno (<giuseppe.benigno@gmail.com>), GPL-3.0+.  
+The KF6 port itself is maintained by Marco Nelles (<dev at maniatek dot de>). See the
+`SPDX-FileCopyrightText` tags in each file for the full attribution history.
 
 ---
 
@@ -11,10 +20,12 @@ Copyright (C) 2018-2019 Giuseppe Benigno (<giuseppe.benigno@gmail.com>), GPL-3.0
 
 Ensure the following tools are installed:
 
+- [KDE](https://www.kde.org/) (`kdialog`)
 - [Ghostscript](https://www.ghostscript.com/)
 - [Poppler](https://poppler.freedesktop.org/)
-- [PDFtk](https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/)
-- [TeX Live](https://tug.org/texlive/)
+- [TeX Live](https://tug.org/texlive/) (`pdfjam`/`pdfbook2`, `pdfnup`)
+- [pdf2djvu](https://github.com/jwilk/pdf2djvu) (for the DjVu conversion actions)
+- [CUPS](https://www.cups.org/) (`lpstat`, `lpr`; for the print action)
 
 ---
 
@@ -25,7 +36,7 @@ Ensure the following tools are installed:
 Run the following command to install the required tools:
 
 ```bash
-sudo pacman -S ghostscript texlive-bin poppler pdftk texlive-binextra texlive-latexrecommended
+sudo pacman -S kdialog ghostscript texlive-bin poppler pdf2djvu cups texlive-binextra texlive-latexrecommended
 ```
 
 ### System-Wide Installation
@@ -96,4 +107,7 @@ Pull requests are encouraged and appreciated.
 
 ## License
 
-This project is licensed under [GPL-3.0+](https://www.gnu.org/licenses/gpl-3.0.html).
+This project is licensed under [GPL-3.0-or-later](https://www.gnu.org/licenses/gpl-3.0.html),
+the same license as the original `kde-service-menu-pdf` project it is ported from.
+The project is [REUSE](https://reuse.software/) compliant; see the `LICENSES/` folder
+and the SPDX tags in each file for details.

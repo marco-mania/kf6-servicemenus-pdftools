@@ -1,6 +1,11 @@
 #!/usr/bin/bash
 #
-# 	Part of kde-service-menu-pdf Version 2.3
+# SPDX-FileCopyrightText: 2007-2019 Giuseppe Benigno <giuseppe.benigno(at)gmail.com>
+# SPDX-FileCopyrightText: 2026 Marco Nelles <dev at maniatek dot de>
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+# 	Part of kde-service-menu-pdf Version 2.3 (unofficial KF6 port: kf6-servicemenus-pdftools)
 # 	Copyright (C) 2007-2019 Giuseppe Benigno <giuseppe.benigno(at)gmail.com>
 #
 # 	This program is free software: you can redistribute it and/or modify
@@ -137,8 +142,8 @@ print () {
 		[ ! -f "${work_dir}/${file_name}" ] && shift && "${kdialog_bin}" --title "${msg_print_finish_title}" --passivepopup "${msg_common_file_not_found}" 5 && continue
 
 		msg=$("${lpr_bin}" -P ${printer} "${work_dir}/${file_name}" 2>&1) && \
-		"${kdialog_bin}" --icon printer --title "${msg_print_finish_title} " --passivepopup "${msg_common_finish_ok}" 5 || \
-		{ "${kdialog_bin}" --title "${msg_print_finish_title} " --detailederror "${msg_common_finish_error}" "${msg}"; exit 2; }
+		"${kdialog_bin}" --icon printer --title "${msg_print_finish_title}" --passivepopup "${msg_common_finish_ok}" 5 || \
+		{ "${kdialog_bin}" --title "${msg_print_finish_title}" --detailederror "${msg_common_finish_error}" "${msg}"; exit 2; }
 
 		shift
 	done
@@ -147,15 +152,16 @@ print () {
 ################################################################################
 
 [ "${1}" = "-h" ] || [ "${1}" = "--help" ] && help
-[ ${#} -lt 1 ] && "${kdialog_bin}" -sorry "${msg_print_file_missing}"
 
-kdialog_bin=$(which kdialog)
+kdialog_bin=$(command -v kdialog)
 [ -z "${kdialog_bin}" ] && echo "kdialog not found!" && exit 1
 
-lpstat_bin=$(which lpstat)
+[ ${#} -lt 1 ] && "${kdialog_bin}" --sorry "${msg_print_file_missing}" && exit 2
+
+lpstat_bin=$(command -v lpstat)
 [ -z "${lpstat_bin}" ] && "${kdialog_bin}" --title "${msg_common_software_not_found_title}" --error "${msg_common_lpstat_not_found_text}" && exit 2
 
-lpr_bin=$(which lpr)
+lpr_bin=$(command -v lpr)
 [ -z "${lpr_bin}" ] && "${kdialog_bin}" --title "${msg_common_software_not_found_title}" --error "${msg_common_lpr_not_found_text}" && exit 2
 
 print "${@}" && exit 0

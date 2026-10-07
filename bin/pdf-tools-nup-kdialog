@@ -1,6 +1,11 @@
 #!/usr/bin/bash
 #
-# 	Part of kde-service-menu-pdf Version 2.3
+# SPDX-FileCopyrightText: 2007-2019 Giuseppe Benigno <giuseppe.benigno(at)gmail.com>
+# SPDX-FileCopyrightText: 2026 Marco Nelles <dev at maniatek dot de>
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+# 	Part of kde-service-menu-pdf Version 2.3 (unofficial KF6 port: kf6-servicemenus-pdftools)
 # 	Copyright (C) 2007-2019 Giuseppe Benigno <giuseppe.benigno(at)gmail.com>
 #
 # 	This program is free software: you can redistribute it and/or modify
@@ -221,7 +226,7 @@ set_nup () {
 		## Reload language strings with current variables
 		load_language
 
-	    size=$(${pdfinfo_bin} "${input}" | grep "^Page size:" | sed "s/^.* \([[:digit:]]*\) x \([[:digit:]]*\).*$/\1x\2/") || exit 3
+	    size=$("${pdfinfo_bin}" "${input}" | grep "^Page size:" | sed "s/^.* \([[:digit:]]*\) x \([[:digit:]]*\).*$/\1x\2/") || exit 3
 		size=$(echo "${size}" | sed "s/\.[[:digit:]]*//g" | sed "s/[^[[:digit:]]*]*:[[:blank:]]*//")
 	    width=$(echo "${size}" | sed 's/\([[:digit:]]*\)[[:blank:]]*x.*/\1/g')
 	    height=$(echo "${size}" | sed 's/.*x[[:blank:]]*\([[:digit:]]*\).*/\1/g')
@@ -242,13 +247,13 @@ set_nup () {
 
 [ "${1}" = "-h" ] || [ "${1}" = "--help" ] || [ ${#} -lt 2 ] && help
 
-kdialog_bin=$(which kdialog)
+kdialog_bin=$(command -v kdialog)
 [ -z "${kdialog_bin}" ] && echo "kdialog not found!" && exit 1
 
-pdfinfo_bin=$(which pdfinfo)
+pdfinfo_bin=$(command -v pdfinfo)
 [ -z "${pdfinfo_bin}" ] && "${kdialog_bin}" --title "${msg_common_software_not_found_title}" --error "${msg_common_pdfinfo_not_found_text}" && exit 2
 
-pdfnup_bin=$(which pdfnup)
+pdfnup_bin=$(command -v pdfnup)
 [ -z "${pdfnup_bin}" ] && "${kdialog_bin}" --title "${msg_common_software_not_found_title}" --error "${msg_common_pdfnup_not_found_text}" && exit 2
 
 nup="${1}"

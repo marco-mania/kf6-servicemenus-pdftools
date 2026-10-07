@@ -1,6 +1,11 @@
 #!/usr/bin/bash
 #
-# 	Part of kde-service-menu-pdf Version 2.3
+# SPDX-FileCopyrightText: 2007-2019 Giuseppe Benigno <giuseppe.benigno(at)gmail.com>
+# SPDX-FileCopyrightText: 2026 Marco Nelles <dev at maniatek dot de>
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+# 	Part of kde-service-menu-pdf Version 2.3 (unofficial KF6 port: kf6-servicemenus-pdftools)
 # 	Copyright (C) 2007-2019 Giuseppe Benigno <giuseppe.benigno(at)gmail.com>
 #
 # 	This program is free software: you can redistribute it and/or modify
@@ -135,11 +140,11 @@ info () {
 		work_dir="${1%/*}"; [ ! -d "${work_dir}" ] && work_dir="$(pwd)"
 		file_name="${1##*/}"
 
-		[ ! -f "${work_dir}/${file_name}" ] && shift && "${kdialog_bin}" --title "${msg_finish_title}" --passivepopup "${msg_common_file_not_found}" 5 && continue
+		[ ! -f "${work_dir}/${file_name}" ] && shift && "${kdialog_bin}" --title "${msg_info_title}" --passivepopup "${msg_common_file_not_found}" 5 && continue
 
 		[ -n "${msg}" ] && msg="${msg}${newline}"
 		msg="${msg}${msg_info_title}    ${file_name}${newline}"
- 		msg="${msg}$("${pdfinfo_bin}" "${work_dir}/${file_name}")${newline}"
+ 		msg="${msg}$("${pdfinfo_bin}" ${password} "${work_dir}/${file_name}")${newline}"
 
  		shift
 	done
@@ -151,10 +156,10 @@ info () {
 
 [ "${1}" = "-h" ] || [ "${1}" = "--help" ] || [ ${#} -lt 1 ] && help
 
-kdialog_bin=$(which kdialog)
+kdialog_bin=$(command -v kdialog)
 [ -z "${kdialog_bin}" ] && echo "kdialog not found!" && exit 1
 
-pdfinfo_bin=$(which pdfinfo)
+pdfinfo_bin=$(command -v pdfinfo)
 [ -z "${pdfinfo_bin}" ] && "${kdialog_bin}" --title "${msg_common_software_not_found_title}" --error "${msg_common_pdfinfo_not_found_text}" && exit 2
 
 info "${@}"

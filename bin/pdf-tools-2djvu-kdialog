@@ -1,6 +1,11 @@
 #!/usr/bin/bash
 #
-# 	Part of kde-service-menu-pdf Version 2.3
+# SPDX-FileCopyrightText: 2007-2019 Giuseppe Benigno <giuseppe.benigno(at)gmail.com>
+# SPDX-FileCopyrightText: 2026 Marco Nelles <dev at maniatek dot de>
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+# 	Part of kde-service-menu-pdf Version 2.3 (unofficial KF6 port: kf6-servicemenus-pdftools)
 # 	Copyright (C) 2007-2019 Giuseppe Benigno <giuseppe.benigno(at)gmail.com>
 #
 # 	This program is free software: you can redistribute it and/or modify
@@ -181,7 +186,7 @@ advanced () {
 
 		[ ! -f "${work_dir}/${file_name}" ] && shift && "${kdialog_bin}" --title "${msg_common_finish_title}" --passivepopup "${msg_common_file_not_found}" 5 && continue
 
-		msg=$(${pdf2djvu_bin} -o "${output_file_name}" --dpi="${dpi}" ${options} "${1}" 2>&1) && \
+		msg=$("${pdf2djvu_bin}" -o "${output_file_name}" --dpi="${dpi}" ${options} "${1}" 2>&1) && \
 		"${kdialog_bin}" --icon image-vnd.djvu --title "${msg_common_finish_title}" --passivepopup "${msg_common_finish_ok}" 5 || \
 		{ "${kdialog_bin}" --title "${msg_common_finish_title}" --detailederror "${msg_common_finish_error}" "${msg}"; exit 2; }
 
@@ -204,10 +209,10 @@ dpi () {
 
 [ "${1}" = "-h" ] || [ "${1}" = "--help" ] || [ ${#} -lt 2 ] && help
 
-kdialog_bin=$(which kdialog)
+kdialog_bin=$(command -v kdialog)
 [ -z "${kdialog_bin}" ] && echo "kdialog not found!" && exit 1
 
-pdf2djvu_bin=$(which pdf2djvu)
+pdf2djvu_bin=$(command -v pdf2djvu)
 [ -z "${pdf2djvu_bin}" ] && "${kdialog_bin}" --title "${msg_common_software_not_found_title}" --error "${msg_common_pdf2djvu_not_found_text}" && exit 2
 
 action="${1}"
